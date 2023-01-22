@@ -34,7 +34,7 @@
     "@types/react": "^18.0.27",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.32.0",
-    "eslint-config-next": "^13.1.2",
+    "eslint-config-next": "^13.1.4",
     "eslint-plugin-simple-import-sort": "^9.0.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.3",
