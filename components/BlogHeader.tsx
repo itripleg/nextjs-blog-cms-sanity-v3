@@ -3,8 +3,8 @@ import { motion, useAnimationControls } from 'framer-motion'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import Mage from '../mages/old.Mage'
 import styles from './BlogHeader.module.css'
-import Mage from './Mage'
 
 export default function BlogHeader({
   title,
@@ -42,9 +42,10 @@ export default function BlogHeader({
               </div>
               {/* big mage */}
               <motion.div
-                animate={{ x: 10 }}
-                transition={{ delay: 3, duration: 1 }}
-                className="hidden 2xl:block"
+                animate={{ x: 0 }}
+                transition={{ delay: 0, duration: 1 }}
+                // className="hidden 2xl:block"
+                className="hidden md:block"
               >
                 <Mage controls={controls} />
               </motion.div>
