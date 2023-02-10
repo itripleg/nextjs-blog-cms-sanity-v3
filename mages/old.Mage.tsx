@@ -76,6 +76,10 @@ export default function Mage({ controls }: Props) {
     }
   }
 
+  useEffect(() => {
+    setCounter(0)
+  }, [])
+
   return (
     <motion.div
       animate={{
@@ -130,11 +134,10 @@ export default function Mage({ controls }: Props) {
           controls.start('jump')
         }}
       >
-        {/* {menuIcon == 'game' ? '🚀' : 'edit' ? '📝' : '😅'} */}
-        {counter == 0 ? (
+        {counter == 0 && showIcons == '' ? (
           <Link href="/Game">🚀</Link>
         ) : counter == 1 ? (
-          <Link href="/Studio">📝</Link>
+          <Link href="/studio">📝</Link>
         ) : counter == 2 ? (
           <Link href="https://super-bubblegum-fd734f.netlify.app/">😎</Link>
         ) : (
