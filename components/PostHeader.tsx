@@ -40,6 +40,7 @@ export default function PostHeader(
               ) : title.includes('bakery') ? (
                 <Bakery scale={10} position={[0, -5, 0]} />
               ) : (
+                // <Bakery scale={10} position={[0, -5, 0]} />
                 <House
                   scale={0.01}
                   rotation={[0, 45, 0]}
