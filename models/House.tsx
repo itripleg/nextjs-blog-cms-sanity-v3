@@ -12,7 +12,7 @@ import React, { useRef } from 'react'
 export default function House(props: any) {
   const { nodes, materials } = useGLTF('/models/low_poly_house.glb') as any
   return (
-    <group {...props} dispose={null}>
+    <group {...props} dispose={null} scale={0.05}>
       <group rotation={[-Math.PI / 2, 0, 0]}>
         <group rotation={[Math.PI / 2, 0, 0]}>
           <mesh

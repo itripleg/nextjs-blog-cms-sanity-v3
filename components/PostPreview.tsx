@@ -47,9 +47,10 @@ export default function PostPreview({
               <ambientLight intensity=".4" />
               {title.includes('office') ? (
                 <Office
-                  scale={30}
-                  position={[-100, -70, 100]}
-                  rotation={[0, 0, 20]}
+                  scale={15}
+                  // position={[-100, -70, 100]}
+                  position={[0, -20, 0]}
+                  // rotation={[0, (Math.PI / 2) * 180, 40]}
                 />
               ) : title.includes('bakery') ? (
                 <Bakery
@@ -58,13 +59,14 @@ export default function PostPreview({
                   rotation={[0, 11, 0]}
                 />
               ) : (
-                <House scale={0.07} position={[0, -50, 0]} />
+                <House scale={5} position={[0, -50, 0]} />
+                // <mesh></mesh>
               )}
               <OrbitControls
                 enablePan={false}
                 enableZoom={false}
-                autoRotate={false}
-                autoRotateSpeed={0.1}
+                autoRotate={true}
+                autoRotateSpeed={0.5}
                 makeDefault
                 rotateSpeed={0.1}
                 maxAzimuthAngle={Infinity}
