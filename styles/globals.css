@@ -13,3 +13,15 @@
 }
 
 a{@apply cursor-pointer}
+
+.info {
+  @apply p-4 text-center
+}
+
+h1{
+  @apply uppercase text-2xl tracking-widest
+}
+
+body{
+  @apply overflow-x-hidden
+}
