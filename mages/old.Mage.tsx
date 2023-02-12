@@ -12,25 +12,7 @@ export default function Mage({ controls }: Props) {
 
   const handleUserKeyPress = useCallback((event) => {
     const { key, keyCode } = event
-    // console.log(key)
-    // console.log(keyCode)
   }, [])
-
-  // useEffect(() => {
-  //   window.addEventListener('mousemove', (event) => {
-  //     setMousePosition(event.screenX)
-  //   })
-  //   // console.log(mousePosition)
-  //   if (mousePosition > window.innerWidth / 2) {
-  //     turn()
-  //   }
-  //   if (mousePosition < window.innerWidth / 2) {
-  //     turn()
-  //   }
-  //   return () => {
-  //     window.removeEventListener('mousemove', setMousePosition)
-  //   }
-  // }, [mousePosition, turn])
 
   const mageVariants = {
     show: { opacity: 1, scale: 1 },
@@ -114,7 +96,8 @@ export default function Mage({ controls }: Props) {
         // variants={mageVariants}
         // className={`${menuIcon}`}
         onClick={() => {
-          toggleMenu()
+          // toggleMenu()
+          setMenuIcon('hidden')
           controls.start('jump').then(() => {
             // controls.start()
           })
@@ -135,7 +118,7 @@ export default function Mage({ controls }: Props) {
         }}
       >
         {counter == 0 && showIcons == '' ? (
-          <Link href="/Game">🚀</Link>
+          <Link href="/Tradestation">🌚</Link>
         ) : counter == 1 ? (
           <Link href="/studio">📝</Link>
         ) : counter == 2 ? (
