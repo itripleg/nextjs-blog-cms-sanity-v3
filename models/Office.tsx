@@ -1096,4 +1096,4 @@ export default function Model(props) {
   )
 }
 
-useGLTF.preload('/models/models/soffice_enhanced.glb')
+useGLTF.preload('/models/office_enhanced.glb')
