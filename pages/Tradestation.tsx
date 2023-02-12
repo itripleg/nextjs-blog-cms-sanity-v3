@@ -1,0 +1,236 @@
+/* eslint-disable @next/next/no-img-element */
+import { Environment, OrbitControls } from '@react-three/drei'
+import { Canvas } from '@react-three/fiber'
+import { motion } from 'framer-motion'
+import Chart from 'Moon/Chart'
+import { useEffect, useState } from 'react'
+
+import Moon from '../models/Moon'
+import MoonPhase from '../Moon/MoonPhase'
+import Retrograde from '../Moon/Retrograde'
+
+const DEBUG = false
+const apiEndpoint = DEBUG ? '/api/' : 'https://api.coingecko.com/api/v3/coins/'
+
+const dummyData = [
+  [2, 11],
+  [10, 50],
+  [20, 77],
+  [30, 26],
+  [40, 42],
+  [50, 68],
+  [60, 18],
+  [70, 38],
+  [80, 18],
+  [100, 100],
+  [120, 50],
+]
+
+interface CoinData {
+  id: string
+  symbol: string
+  name: string
+  asset_platform_id: null | string
+  platforms: Record<string, any>
+  detail_platforms: Record<string, any>
+  block_time_in_minutes: number
+  hashing_algorithm: string
+  categories: any[]
+  public_notice: null | string
+  additional_notices: any[]
+  localization: Record<string, any>
+  description: Record<string, any>
+  links: Record<string, any>
+  image: Record<string, any>
+  country_origin: string
+  genesis_date: string
+  sentiment_votes_up_percentage: number
+  sentiment_votes_down_percentage: number
+  market_cap_rank: number
+  coingecko_rank: number
+  coingecko_score: number
+  developer_score: number
+  community_score: number
+  liquidity_score: number
+  public_interest_score: number
+  market_data: Record<string, any>
+  community_data: Record<string, any>
+  developer_data: Record<string, any>
+  public_interest_stats: Record<string, any>
+  status_updates: any[]
+  last_updated: string
+  tickers: any[]
+}
+
+const Tradestation = () => {
+  const [data, setData] = useState<CoinData | null>(null)
+  const [coinId, setCoinId] = useState('bitcoin')
+  const [currency, setCurrency] = useState('usd')
+  const [newCoinId, setNewCoinId] = useState('bitcoin')
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log('Fetching data from', apiEndpoint)
+      const res = await fetch(`${apiEndpoint}/${coinId}`)
+
+      if (res.ok) {
+        const data = await res.json()
+
+        setData({
+          id: data.id,
+          symbol: data.symbol,
+          name: data.name,
+          asset_platform_id: data.asset_platform_id,
+          platforms: data.platforms,
+          detail_platforms: data.detail_platforms,
+          block_time_in_minutes: data.block_time_in_minutes,
+          hashing_algorithm: data.hashing_algorithm,
+          categories: data.categories,
+          public_notice: data.public_notice,
+          additional_notices: data.additional_notices,
+          localization: data.localization,
+          description: data.description,
+          links: data.links,
+          image: data.image,
+          country_origin: data.country_origin,
+          genesis_date: data.genesis_date,
+          sentiment_votes_up_percentage: data.sentiment_votes_up_percentage,
+          sentiment_votes_down_percentage: data.sentiment_votes_down_percentage,
+          market_cap_rank: data.market_cap_rank,
+          coingecko_rank: data.coingecko_rank,
+          coingecko_score: data.coingecko_score,
+          developer_score: data.developer_score,
+          community_score: data.community_score,
+          liquidity_score: data.liquidity_score,
+          public_interest_score: data.public_interest_score,
+          market_data: data.market_data,
+          community_data: data.community_data,
+          developer_data: data.developer_data,
+          public_interest_stats: data.public_interest_stats,
+          status_updates: data.status_updates,
+          last_updated: data.last_updated,
+          tickers: data.tickers,
+        })
+      }
+    }
+    // get initial price then update every 10 seconds
+    fetchData()
+    const intervalId = setInterval(fetchData, 10 * 1000)
+    return () => clearInterval(intervalId)
+  }, [coinId])
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setCoinId(newCoinId)
+  }
+
+  // returns just the first sentence of the coin description
+  // can be buggy if the first sentence has a e.g. URL
+  function getFirstSentence(paragraph: string) {
+    const firstSentence = paragraph.match(/^[^\.\?!]*/)[0]
+    return firstSentence + '.'
+  }
+
+  const firstSentence = data ? getFirstSentence(data?.description.en) : null
+
+  if (!DEBUG) {
+    return (
+      <div className="mx-auto grid max-w-4xl gap-y-20 overflow-hidden p-2">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 4, delay: 3 }}
+          className="absolute -z-40 h-full w-full overflow-hidden p-2"
+        >
+          <Canvas>
+            <Environment preset="sunset" />
+            <ambientLight />
+            <OrbitControls autoRotate={true} autoRotateSpeed={0.1} />
+            <Moon scale={3.4} />
+          </Canvas>
+        </motion.div>
+        {data ? (
+          <>
+            <div className="text-center text-6xl">
+              <div className="flex items-center justify-center gap-4 text-center">
+                ${data.market_data.current_price.usd}
+                <motion.img
+                  animate={{ opacity: 1, scale: 1.2 }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: 'reverse',
+                    // type: 'spring',
+                  }}
+                  src={data.image.small}
+                  alt="logo"
+                />
+              </div>
+            </div>
+            <div className="max-h-[400px]">
+              <p className="p-8 text-center shadow">{firstSentence}</p>
+            </div>{' '}
+            <div className="info">
+              <div className="mx-auto flex place-content-center pb-12">
+                <Chart data={dummyData} width={400} height={100} />
+              </div>
+              <div className="grid grid-cols-2 place-items-center bg-blue-800/20 text-center">
+                <MoonPhase />
+                <Retrograde />
+              </div>
+              <div className="py-8">
+                <p>All time high: {data.market_data.ath.usd}</p>
+                <p>24 Hour High: {data.market_data.high_24h.usd}</p>
+                <p>24 Hour Low: {data.market_data.low_24h.usd}</p>
+                <p>
+                  Volume: {JSON.stringify(data.market_data.total_volume.usd)}
+                </p>
+              </div>
+            </div>
+            <form onSubmit={handleSubmit} className="col-span-auto">
+              <input
+                type="text"
+                name="coinId"
+                value={newCoinId}
+                onChange={(event) => setNewCoinId(event.target.value)}
+                className="mb-20 h-20 w-full  text-center uppercase tracking-widest shadow-lg"
+              />
+              <button
+                type="submit"
+                className=" w-full bg-blue-800 text-white/90 "
+              >
+                Get Data
+              </button>
+            </form>
+          </>
+        ) : (
+          <p className="text-center">Loading...</p>
+        )}
+        <div className="flex gap-8 overflow-x-scroll text-center">
+          {data?.tickers.map((ticker, i) => (
+            <>
+              <div className="p-4">
+                <h1>{ticker.market.name}</h1>
+                <p>${ticker.last.toLocaleString('en-US')}</p>
+                <p>
+                  Volume: {Math.floor(ticker.volume).toLocaleString('en-US')}
+                </p>
+              </div>
+            </>
+          ))}
+        </div>
+        {/* <MoonPhase /> */}
+      </div>
+    )
+  } else {
+    console.log(data)
+    return (
+      <>
+        <div>debug</div>
+        <div>{data?.market_data.current_price.usd}</div>
+      </>
+    )
+  }
+}
+
+export default Tradestation
