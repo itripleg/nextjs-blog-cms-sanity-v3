@@ -1,8 +1,9 @@
 import { format, isToday, isWithinInterval } from 'date-fns'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 const retrograde = {
-  0: { emoji: '➡️', sign: 'Not in Retrograde' },
+  0: { emoji: '➡️', sign: 'NOT in Retrograde' },
   1: { emoji: '⏪', sign: 'In Retrograde' },
 }
 
@@ -37,9 +38,27 @@ export default function MercuryRetrogradeIndicator() {
 
   return (
     <div>
-      <p>Mercury Retrograde: {retrograde[isMercuryRetrograde].emoji}</p>
-      <p>Status: {retrograde[isMercuryRetrograde].sign}</p>
-      <p>Today is {format(date, 'MMMM do, yyyy')}</p>
+      <p>Mercury is</p>
+      <motion.div
+        initial={{ x: -10 }}
+        animate={{ scale: [1, 1.4], x: 20 }}
+        transition={{
+          repeat: Infinity,
+          duration: 3,
+          type: 'spring',
+          bounce: 0,
+        }}
+      >
+        <p> {retrograde[isMercuryRetrograde].emoji}</p>
+      </motion.div>
+      <p>{retrograde[isMercuryRetrograde].sign}</p>
+      {/* <p>Today is {format(date, 'MMMM do, yyyy')}</p> */}
+      <style jsx>{`
+        p {
+          color: white;
+          font-size: 20px;
+        }
+      `}</style>
     </div>
   )
 }
