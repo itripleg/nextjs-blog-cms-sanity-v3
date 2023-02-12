@@ -1,28 +1,49 @@
 import * as d3 from 'd3'
-type Props = {}
+import format from 'date-fns/format'
+import * as React from 'react'
 
-// @ts-ignore
+type Props = {
+  data: any[]
+  width: number
+  height: number
+}
+
 function Chart({ data, width, height }: Props) {
-  let dummyData: any = [
-    [2, 11],
-    [10, 50],
-    [20, 77],
-    [30, 26],
-    [40, 42],
-    [50, 18],
-  ]
+  const xMax = d3.max(data, (d) => d[0])
+  const yMax = d3.max(data, (d) => d[1])
 
-  let line = d3.line()
-  // let line = d3.line().y((d) => height)
-  let result = line(dummyData)
-  // console.log(line)
-  // console.log(d3)
+  const xScale = d3
+    .scaleTime()
+    .domain([d3.min(data, (d) => d[0]), d3.max(data, (d) => d[0])!])
+    .range([0, width])
+
+  const yScale = d3
+    .scaleLinear()
+    .domain([0, d3.max(data, (d) => +d[1])!])
+    .range([height, 0])
+
+  const line = d3
+    .line()
+    .x((d) => xScale(d[0]))
+    .y((d) => yScale(d[1]))
+
+  const result = line(data.map((d) => [d[0], yScale(d[1])]))
+
+  const xAxis = d3
+    .axisBottom(xScale)
+    .ticks(data.length / 2)
+    // @ts-ignore
+    .tickFormat((d) => '🌘')
+  // .tickFormat((d) => format(d, 'MMM'))
+
+  const yAxis = d3.axisLeft(yScale).ticks(10)
 
   return (
-    <div className="h-screen w-full">
-      {/* <h1> Chart</h1> */}
-      <svg className="h-screen w-full bg-black/20 text-blue-500">
+    <div className="chart-container" style={{ paddingBottom: '30px' }}>
+      <svg className=" bg-black/20 text-blue-500" width={width} height={height}>
         <path d={result} fill="none" stroke="black" />
+        <g ref={(node) => d3.select(node).call(xAxis)} />
+        <g ref={(node) => d3.select(node).call(yAxis)} />
       </svg>
     </div>
   )
