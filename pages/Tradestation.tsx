@@ -172,18 +172,30 @@ const Tradestation = () => {
           <>
             <div className="text-center text-6xl">
               <div className="flex items-center justify-center gap-4 text-center">
-                ${data.market_data.current_price.usd.toLocaleString('en-US')}
-                <motion.img
-                  animate={{ opacity: 1, scale: 1.2 }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatType: 'reverse',
-                    // type: 'spring',
-                  }}
-                  src={data.image.small}
-                  alt="logo"
-                />
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 3, duration: 1 }}
+                >
+                  ${data.market_data.current_price.usd.toLocaleString('en-US')}
+                </motion.div>
+                <motion.div
+                  initial={{ x: -80, scale: 1.5, type: 'spring' }}
+                  animate={{ x: 0, scale: 1, type: 'spring' }}
+                  transition={{ delay: 3, bounce: 1, duration: 1 }}
+                >
+                  <motion.img
+                    animate={{ opacity: 1, scale: 1.2 }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: 'reverse',
+                      // type: 'spring',
+                    }}
+                    src={data.image.small}
+                    alt="logo"
+                  />
+                </motion.div>
               </div>
             </div>
             <div className="max-h-[400px]">
@@ -208,7 +220,7 @@ const Tradestation = () => {
             </div>
             <div className="flex flex-col pb-8 text-center lg:p-12">
               <div className="mx-auto flex lg:flex-col">
-                <img src={data.image.small} />
+                <motion.img src={data.image.small} />
               </div>
               <div>
                 <p>
