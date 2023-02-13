@@ -3,7 +3,9 @@ import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { motion } from 'framer-motion'
 import Chart from 'Moon/Chart'
+import Script from 'next/script'
 import { useEffect, useState } from 'react'
+import useMeasure from 'react-use-measure'
 
 import Moon from '../models/Moon'
 import MoonPhase from '../Moon/MoonPhase'
@@ -13,8 +15,9 @@ const DEBUG = false
 const apiEndpoint = DEBUG ? '/api/' : 'https://api.coingecko.com/api/v3/coins/'
 
 const dummyData = [
+  [0, 0],
   [2, 11],
-  [10, 50],
+  [4, 8],
   [20, 77],
   [30, 26],
   [40, 42],
@@ -24,6 +27,8 @@ const dummyData = [
   [80, 18],
   [100, 100],
   [120, 50],
+  [150, 58],
+  [160, 20],
 ]
 
 interface CoinData {
@@ -132,10 +137,13 @@ const Tradestation = () => {
   }
 
   const firstSentence = data ? getFirstSentence(data?.description.en) : null
+  const lastNewMoon = new Date(2023, 0, 21, 21, 53)
+
+  const [chartContainer, bounds] = useMeasure()
 
   if (!DEBUG) {
     return (
-      <div className="mx-auto grid max-w-4xl gap-y-20 overflow-hidden p-2">
+      <div className="mx-auto grid max-w-4xl flex-shrink grid-cols-1 gap-y-20 p-2 scrollbar-thin scrollbar-track-blue-800">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -153,7 +161,7 @@ const Tradestation = () => {
           <>
             <div className="text-center text-6xl">
               <div className="flex items-center justify-center gap-4 text-center">
-                ${data.market_data.current_price.usd}
+                ${data.market_data.current_price.usd.toLocaleString('en-US')}
                 <motion.img
                   animate={{ opacity: 1, scale: 1.2 }}
                   transition={{
@@ -171,19 +179,39 @@ const Tradestation = () => {
               <p className="p-8 text-center shadow">{firstSentence}</p>
             </div>{' '}
             <div className="info">
-              <div className="mx-auto flex place-content-center pb-12">
-                <Chart data={dummyData} width={400} height={100} />
+              <div
+                className="mx-auto flex place-content-center bg-white/20 pb-12"
+                ref={chartContainer}
+              >
+                {/* <>{Math.floor(bounds.width)}</>
+                <>{Math.floor(bounds.height)}</> */}
+                <Chart
+                  data={dummyData}
+                  width={Math.floor(bounds.width)}
+                  height={Math.floor(bounds.height / 1.35)}
+                  // height={100}
+                />
               </div>
-              <div className="grid grid-cols-2 place-items-center bg-blue-800/20 text-center">
-                <MoonPhase />
+              <div className="grid grid-cols-2 place-items-center bg-blue-800/20 py-4 text-center">
+                <MoonPhase lastNewMoon={lastNewMoon} />
                 <Retrograde />
               </div>
-              <div className="py-8">
-                <p>All time high: {data.market_data.ath.usd}</p>
-                <p>24 Hour High: {data.market_data.high_24h.usd}</p>
-                <p>24 Hour Low: {data.market_data.low_24h.usd}</p>
+              <div className="pt-8">
                 <p>
-                  Volume: {JSON.stringify(data.market_data.total_volume.usd)}
+                  All time high: $
+                  {data.market_data.ath.usd.toLocaleString('en-US')}
+                </p>
+                <p>
+                  24 Hour High: $
+                  {data.market_data.high_24h.usd.toLocaleString('en-US')}
+                </p>
+                <p>
+                  24 Hour Low: $
+                  {data.market_data.low_24h.usd.toLocaleString('en-US')}
+                </p>
+                <p>
+                  Volume: $
+                  {data.market_data.total_volume.usd.toLocaleString('en-US')}
                 </p>
               </div>
             </div>
@@ -206,7 +234,7 @@ const Tradestation = () => {
         ) : (
           <p className="text-center">Loading...</p>
         )}
-        <div className="flex gap-8 overflow-x-scroll text-center">
+        <div className="flex gap-8 overflow-x-scroll text-center scrollbar scrollbar-track-blue-800 scrollbar-thumb-white/60">
           {data?.tickers.map((ticker, i) => (
             <>
               <div className="p-4">
@@ -219,7 +247,6 @@ const Tradestation = () => {
             </>
           ))}
         </div>
-        {/* <MoonPhase /> */}
       </div>
     )
   } else {
