@@ -68,6 +68,17 @@ interface CoinData {
   tickers: any[]
 }
 
+const topCoins = [
+  'bitcoin',
+  'ethereum',
+  'tether',
+  'binancecoin',
+  'cardano',
+  'chainlink',
+  'polkadot',
+  'avalanche-2',
+]
+
 const Tradestation = () => {
   const [data, setData] = useState<CoinData | null>(null)
   const [coinId, setCoinId] = useState('bitcoin')
@@ -152,46 +163,22 @@ const Tradestation = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1 }}
-          className="fixed left-20 mt-20 hidden flex-col items-center border bg-white/80 p-2 shadow md:flex"
+          className="fixed left-20 mt-20 hidden flex-col items-center gap-2 border bg-white/80 p-2 uppercase shadow md:flex"
         >
           <h1>👑</h1>
-          <p
-            onClick={() => {
-              setCoinId('bitcoin')
-              setNewCoinId('bitcoin')
-            }}
-          >
-            Bitcoin
-          </p>
-          <p
-            onClick={() => {
-              setCoinId('ethereum')
-              setNewCoinId('ethereum')
-            }}
-          >
-            Ethereum
-          </p>
-          <p
-            onClick={() => {
-              setCoinId('cardano')
-              setNewCoinId('cardano')
-            }}
-          >
-            Cardano
-          </p>
-          <p
-            onClick={() => {
-              setCoinId('binancecoin')
-              setNewCoinId('binancecoin')
-            }}
-          >
-            BNB
-          </p>
-          <style jsx>{`
-            p {
-              cursor: pointer;
-            }
-          `}</style>
+          {topCoins.map((coin, i) => {
+            return (
+              <p
+                key={i}
+                onClick={() => {
+                  setCoinId(coin)
+                  setNewCoinId(coin)
+                }}
+              >
+                {coin}
+              </p>
+            )
+          })}
         </motion.div>
         <motion.div
           initial={{ opacity: 0 }}
