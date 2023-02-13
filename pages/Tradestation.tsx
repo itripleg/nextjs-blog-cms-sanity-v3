@@ -138,6 +138,8 @@ const Tradestation = () => {
   }
 
   const firstSentence = data ? getFirstSentence(data?.description.en) : null
+
+  // TODO: move to MoonPhase
   const lastNewMoon = new Date(2023, 0, 21, 21, 53)
 
   const [chartContainer, bounds] = useMeasure()
@@ -146,6 +148,51 @@ const Tradestation = () => {
   if (!DEBUG) {
     return (
       <div className="mx-auto grid max-w-4xl flex-shrink grid-cols-1 gap-y-20 p-2 scrollbar-thin scrollbar-track-blue-800">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }}
+          className="fixed left-20 mt-20 hidden flex-col items-center border bg-white/80 p-2 shadow md:flex"
+        >
+          <h1>👑</h1>
+          <p
+            onClick={() => {
+              setCoinId('bitcoin')
+              setNewCoinId('bitcoin')
+            }}
+          >
+            Bitcoin
+          </p>
+          <p
+            onClick={() => {
+              setCoinId('ethereum')
+              setNewCoinId('ethereum')
+            }}
+          >
+            Ethereum
+          </p>
+          <p
+            onClick={() => {
+              setCoinId('cardano')
+              setNewCoinId('cardano')
+            }}
+          >
+            Cardano
+          </p>
+          <p
+            onClick={() => {
+              setCoinId('binancecoin')
+              setNewCoinId('binancecoin')
+            }}
+          >
+            BNB
+          </p>
+          <style jsx>{`
+            p {
+              cursor: pointer;
+            }
+          `}</style>
+        </motion.div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -199,7 +246,14 @@ const Tradestation = () => {
               </div>
             </div>
             <div className="max-h-[400px]">
-              <p className="p-8 text-center shadow">{firstSentence}</p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 1 }}
+                className="p-8 text-center shadow"
+              >
+                {firstSentence}
+              </motion.p>
             </div>{' '}
             <div className="info">
               <div
