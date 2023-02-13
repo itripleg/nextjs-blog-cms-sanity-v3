@@ -1,15 +1,16 @@
 // @ts-nocheck
 import { motion, useAnimationControls } from 'framer-motion'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useCallback, useEffect } from 'react'
 
 type Props = { controls: any }
 
 export default function Mage({ controls }: Props) {
+  const router = useRouter()
   const [icon, setIcon] = useState('')
   const [mousePosition, setMousePosition] = useState(null)
-
   const handleUserKeyPress = useCallback((event) => {
     const { key, keyCode } = event
   }, [])
@@ -118,7 +119,11 @@ export default function Mage({ controls }: Props) {
         }}
       >
         {counter == 0 && showIcons == '' ? (
-          <Link href="/Tradestation">🌚</Link>
+          router.pathname == '/' ? (
+            <Link href="/Tradestation">🌚</Link>
+          ) : (
+            <Link href="/">🏠</Link>
+          )
         ) : counter == 1 ? (
           <Link href="/studio">📝</Link>
         ) : counter == 2 ? (

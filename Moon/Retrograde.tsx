@@ -40,8 +40,8 @@ export default function MercuryRetrogradeIndicator() {
     <div>
       <p>Mercury is</p>
       <motion.div
-        initial={{ x: -10 }}
-        animate={{ scale: [1, 1.4], x: 20 }}
+        initial={{ x: -10, scale: 1.3 }}
+        animate={{ x: 20 }}
         transition={{
           repeat: Infinity,
           duration: 3,
@@ -51,7 +51,7 @@ export default function MercuryRetrogradeIndicator() {
       >
         <p> {retrograde[isMercuryRetrograde].emoji}</p>
       </motion.div>
-      <p>{retrograde[isMercuryRetrograde].sign}</p>
+      <p className="text-black">{retrograde[isMercuryRetrograde].sign}</p>
       {/* <p>Today is {format(date, 'MMMM do, yyyy')}</p> */}
       <style jsx>{`
         p {

@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { motion } from 'framer-motion'
+import { motion, useAnimationControls } from 'framer-motion'
 import Chart from 'Moon/Chart'
 import Script from 'next/script'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import useMeasure from 'react-use-measure'
 
+import Mage from '../mages/old.Mage'
 import Moon from '../models/Moon'
 import MoonPhase from '../Moon/MoonPhase'
 import Retrograde from '../Moon/Retrograde'
@@ -75,7 +76,7 @@ const Tradestation = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('Fetching data from', apiEndpoint)
+      // console.log('Fetching data from', apiEndpoint)
       const res = await fetch(`${apiEndpoint}/${coinId}`)
 
       if (res.ok) {
@@ -140,6 +141,7 @@ const Tradestation = () => {
   const lastNewMoon = new Date(2023, 0, 21, 21, 53)
 
   const [chartContainer, bounds] = useMeasure()
+  const mageControls = useAnimationControls()
 
   if (!DEBUG) {
     return (
@@ -147,15 +149,24 @@ const Tradestation = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 4, delay: 3 }}
-          className="absolute -z-40 h-full w-full overflow-hidden p-2"
+          transition={{ delay: 1 }}
         >
-          <Canvas>
-            <Environment preset="sunset" />
-            <ambientLight />
-            <OrbitControls autoRotate={true} autoRotateSpeed={0.1} />
-            <Moon scale={3.4} />
-          </Canvas>
+          <Mage controls={mageControls} />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 4, delay: 3 }}
+          className="absolute -z-40 -m-2 h-full w-full overflow-hidden "
+        >
+          <Suspense>
+            <Canvas>
+              <Environment preset="sunset" />
+              <ambientLight />
+              <OrbitControls autoRotate={true} autoRotateSpeed={0.1} />
+              <Moon scale={3.4} />
+            </Canvas>
+          </Suspense>
         </motion.div>
         {data ? (
           <>
@@ -180,11 +191,9 @@ const Tradestation = () => {
             </div>{' '}
             <div className="info">
               <div
-                className="mx-auto flex place-content-center bg-white/20 pb-12"
+                className="mx-auto my-2 flex h-56 place-content-center bg-white/20 pl-2 text-purple-800/60"
                 ref={chartContainer}
               >
-                {/* <>{Math.floor(bounds.width)}</>
-                <>{Math.floor(bounds.height)}</> */}
                 <Chart
                   data={dummyData}
                   width={Math.floor(bounds.width)}
@@ -196,7 +205,12 @@ const Tradestation = () => {
                 <MoonPhase lastNewMoon={lastNewMoon} />
                 <Retrograde />
               </div>
-              <div className="pt-8">
+            </div>
+            <div className="flex flex-col pb-8 text-center lg:p-12">
+              <div className="mx-auto flex lg:flex-col">
+                <img src={data.image.small} />
+              </div>
+              <div>
                 <p>
                   All time high: $
                   {data.market_data.ath.usd.toLocaleString('en-US')}
@@ -223,16 +237,22 @@ const Tradestation = () => {
                 onChange={(event) => setNewCoinId(event.target.value)}
                 className="mb-20 h-20 w-full  text-center uppercase tracking-widest shadow-lg"
               />
+
               <button
                 type="submit"
                 className=" w-full bg-blue-800 text-white/90 "
               >
-                Get Data
+                Refresh Data
               </button>
             </form>
           </>
         ) : (
-          <p className="text-center">Loading...</p>
+          <div className="flex h-screen place-content-center items-center justify-center">
+            <motion.p initial={{ scale: 0.1 }} animate={{ scale: 2, y: -200 }}>
+              🚀
+              {/* <p className="text-center">Lifting Off...</p> */}
+            </motion.p>
+          </div>
         )}
         <div className="flex gap-8 overflow-x-scroll text-center scrollbar scrollbar-track-blue-800 scrollbar-thumb-white/60">
           {data?.tickers.map((ticker, i) => (
