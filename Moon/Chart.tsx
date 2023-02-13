@@ -65,26 +65,31 @@ function Chart({ data, width, height }: Props) {
             {max}
           </text>
         ))}
-        {xScale.ticks(5).map((max) => (
+        {xScale.ticks(5).map((max, i) => (
           <motion.text
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2 }}
+            transition={{ delay: 0.5 * i }}
             x={xScale(max)}
             key={max}
             fill="current-color"
             className="current-color  p-20 text-xs"
           >
             {/* {max} */}
-            🌕
+            {max % 2 == 1 ? '🌕' : '🌘'}
           </motion.text>
         ))}
 
         {data.map((d, i) => (
           <motion.circle
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 2, duration: 1, type: 'spring', bounce: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              delay: 0.15 * i,
+              duration: 1,
+              type: 'spring',
+              bounce: 0.3,
+            }}
             key={i}
             r="2"
             cx={xScale(d[0])}
