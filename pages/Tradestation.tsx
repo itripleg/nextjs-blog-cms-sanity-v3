@@ -27,9 +27,9 @@ const dummyData = [
   [70, 38],
   [80, 18],
   [100, 100],
-  [120, 50],
-  [150, 58],
-  [160, 20],
+  [120, 40],
+  [140, 58],
+  [160, 90],
 ]
 
 interface CoinData {
@@ -191,7 +191,7 @@ const Tradestation = () => {
             </div>{' '}
             <div className="info">
               <div
-                className="mx-auto my-2 flex h-56 place-content-center bg-white/20 pl-2 text-purple-800/60"
+                className="mx-auto my-2 flex h-56 place-content-center bg-white/20 pl-2 text-gray-800/60"
                 ref={chartContainer}
               >
                 <Chart
