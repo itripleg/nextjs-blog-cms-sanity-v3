@@ -1,16 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
+import Chart from 'ChartWidget/Chart'
 import { motion, useAnimationControls } from 'framer-motion'
-import Chart from 'Moon/Chart'
 import Script from 'next/script'
 import { Suspense, useEffect, useState } from 'react'
 import useMeasure from 'react-use-measure'
 
 import Mage from '../mages/old.Mage'
-import Moon from '../models/Moon'
 import MoonPhase from '../Moon/MoonPhase'
 import Retrograde from '../Moon/Retrograde'
+import Moon from '../myModels/Moon'
+import Wheel from '../myModels/Wheel'
 
 const DEBUG = false
 const apiEndpoint = DEBUG ? '/api/' : 'https://api.coingecko.com/api/v3/coins/'
@@ -242,15 +243,15 @@ const Tradestation = () => {
                 {firstSentence}
               </motion.p>
             </div>{' '}
-            <div className="info">
+            <div className="info border">
               <div
-                className="mx-auto my-2 flex h-56 place-content-center bg-white/20 pl-2 text-gray-800/60"
+                className=" mx-auto my-2 flex h-56 place-content-center border bg-white/20 pl-2 text-gray-800/60"
                 ref={chartContainer}
               >
                 <Chart
                   data={dummyData}
                   width={Math.floor(bounds.width)}
-                  height={Math.floor(bounds.height / 1.35)}
+                  height={Math.floor(bounds.height / 1.15)}
                   // height={100}
                 />
               </div>

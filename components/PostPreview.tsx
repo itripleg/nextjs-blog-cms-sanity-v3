@@ -8,9 +8,9 @@ import type { Post } from 'lib/sanity.queries'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
-const Bakery = dynamic(() => import('../models/Bakery'))
-const House = dynamic(() => import('../models/House'))
-const Office = dynamic(() => import('../models/Office'))
+const Bakery = dynamic(() => import('../myModels/Bakery'))
+const House = dynamic(() => import('../myModels/House'))
+const Office = dynamic(() => import('../myModels/Office'))
 
 export default function PostPreview({
   title,

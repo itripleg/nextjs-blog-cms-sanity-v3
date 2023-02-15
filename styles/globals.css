@@ -25,3 +25,55 @@ h1{
 body{
   @apply overflow-x-hidden
 }
+
+
+
+/* Game */
+/* Crypto Planet Adventure */
+/* Color scheme */
+:root {
+  --color-primary: #1E3A8A;
+  --color-secondary: #EF476F;
+  --color-accent: #F7D038;
+  --color-bg: #FFFFFF;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 2.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-bg);
+}
+
+.btn-accent {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.btn:hover,
+.btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn:focus {
+  outline: none;
+}

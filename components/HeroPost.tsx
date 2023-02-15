@@ -5,7 +5,7 @@ import CoverImage from 'components/CoverImage'
 import Date from 'components/PostDate'
 import { motion } from 'framer-motion'
 import type { Post } from 'lib/sanity.queries'
-import Office from 'models/Office'
+import Office from 'myModels/Office'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
