@@ -18,8 +18,12 @@ const Planet = ({
   const ringRef = useRef()
 
   useFrame(() => {
-    planetRef.current.rotation.y += 0.002
-    ringRef.current.rotation.y -= 0.003
+    if (planetRef.current && ringRef.current) {
+      // @ts-ignore
+      planetRef.current.rotation.y += 0.002
+      // @ts-ignore
+      ringRef.current.rotation.y -= 0.003
+    }
   })
 
   return (

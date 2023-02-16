@@ -22,6 +22,7 @@
     "@sanity/vision": "^3.2.4",
     "@types/d3": "^7.4.0",
     "@vercel/og": "^0.0.27",
+    "binance-api-node": "^0.12.3",
     "classnames": "^2.3.2",
     "d3": "^7.8.2",
     "date-fns": "^2.29.3",

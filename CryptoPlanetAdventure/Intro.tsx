@@ -9,10 +9,27 @@ import Planet from './Planet'
 import Rocket from './Rocket'
 
 const Intro = () => {
-  const [target, setTarget] = useState(null)
+  const [target, setTarget] = useState<THREE.Vector3 | null>(null)
   const [planets, setPlanets] = useState([])
+  const [camera, setCamera] = useState<THREE.PerspectiveCamera>()
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const newCamera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      )
+
+      window.addEventListener('resize', () => {
+        newCamera.aspect = window.innerWidth / window.innerHeight
+        newCamera.updateProjectionMatrix()
+      })
+
+      setCamera(newCamera)
+    }
+
     const randomPosition = (min, max) => {
       const range = max - min
       return min + Math.random() * range
@@ -102,7 +119,8 @@ const Intro = () => {
                 onPlanetClick={handlePlanetClick}
               />
             ))}
-            {target && <Rocket target={target} />}
+            {target && <Rocket camera={camera} target={target} />}
+            {/* {target && <Camera target={target} />} */}
           </Canvas>
         </div>
         <Link href="/play">
