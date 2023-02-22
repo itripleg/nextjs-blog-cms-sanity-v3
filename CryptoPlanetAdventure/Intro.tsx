@@ -123,10 +123,19 @@ const Intro = () => {
             {/* {target && <Camera target={target} />} */}
           </Canvas>
         </div>
-        <Link href="/play">
-          <button className="btn btn-primary mr-4 md:mr-8">Play Now</button>
+        <div className="p-20">
+          <h2 className="text-lg font-medium md:text-xl">Instructions</h2>
+          <ol className="mt-4 list-decimal pl-6 text-left text-base">
+            <li>Use the mouse to move the camera around.</li>
+            <li>Click on a planet to travel to it.</li>
+            <li>Collect rare cryptocurrencies on each planet.</li>
+            <li>Beware of asteroids!</li>
+          </ol>
+        </div>
+        <Link href="/">
+          <button className="btn btn-primary mr-4 md:mr-8">Home</button>
         </Link>
-        <Link href="/about">
+        <Link href="/https://tiny-sable-5f3b26.netlify.app/posts/building-crypto-planet-adventure">
           <button className="btn btn-secondary">Learn More</button>
         </Link>
       </div>
