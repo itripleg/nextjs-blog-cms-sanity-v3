@@ -9,6 +9,8 @@ import * as demo from 'lib/demo.data'
 import type { Post, Settings } from 'lib/sanity.queries'
 import Head from 'next/head'
 
+import Footer from './Footer'
+
 export interface IndexPageProps {
   preview?: boolean
   loading?: boolean
@@ -41,6 +43,7 @@ export default function IndexPage(props: IndexPageProps) {
           )}
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
         </Container>
+        <Footer />
         {/* <IntroTemplate /> */}
       </Layout>
     </>
