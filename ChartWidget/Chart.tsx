@@ -12,35 +12,31 @@ type Props = {
 const margin = { top: 20, right: 0, bottom: 0, left: 40 }
 
 function Chart({ data, width, height }: Props) {
-  // domain is the min/max of input values
-  // range min/max of output values
-  let xScale = d3
-    .scaleLinear()
-    .domain(d3.extent(data.map((d) => d[0])))
+  const transformedData = data.map((trade) => [
+    new Date(trade.time).getTime(),
+    parseFloat(trade.price),
+  ])
+
+  const xScale = d3
+    .scaleTime()
+    .domain(d3.extent(transformedData.map((d) => d[0])))
     .range([margin.left, width - margin.right])
 
-  let yScale = d3
+  const yScale = d3
     .scaleLinear()
-    .domain(d3.extent(data.map((d) => d[1])))
+    .domain(d3.extent(transformedData.map((d) => d[1])))
     .range([height - margin.bottom, margin.top]) //inverted since the values flip when this scale is applied
 
-  let moonScale = d3
-    .scaleLinear()
-    .domain(d3.extent(data.map((d) => d[0])))
-    .range([margin.left, width - margin.right])
-
-  // our line with scaled x,y values
-  let line = d3
+  const line = d3
     .line()
     .x((d) => xScale(d[0]))
     .y((d) => yScale(d[1]))
-
-  // the path data to feed into our svg
   // @ts-ignore
-  let path = line(data)
-  // console.log(path)
+  const path = line(transformedData)
 
-  console.log(yScale.ticks())
+  const timeFormat = d3.timeFormat('%b %d, %Y')
+  const startTime = xScale.domain()[0]
+  const endTime = xScale.domain()[1]
 
   return (
     <>
@@ -48,19 +44,17 @@ function Chart({ data, width, height }: Props) {
         <motion.path
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ duration: 2 }}
+          transition={{ delay: 2, duration: 2 }}
           d={path}
           stroke="currentColor"
           fill="none"
           strokeWidth="1.5"
         />
-        <line x2={10} y2={10} />
         {yScale.ticks(5).map((max) => (
           <text
             y={yScale(max)}
             key={max}
-            className="current-color  p-20 text-xs"
-            // alignmentBaseline="middle"
+            className="current-color p-20 text-xs"
           >
             {max}
           </text>
@@ -71,32 +65,30 @@ function Chart({ data, width, height }: Props) {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 * i }}
             x={xScale(max)}
-            key={max}
+            key={i}
             fill="current-color"
-            className="current-color  p-20 text-xs"
+            className="current-color p-20 text-xs"
           >
-            {/* {max} */}
-            {max % 2 == 1 ? '🌕' : '🌘'}
+            {format(max, 'MMM d')}
           </motion.text>
         ))}
-
-        {data.map((d, i) => (
-          <motion.circle
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              delay: 0.15 * i,
-              duration: 1,
-              type: 'spring',
-              bounce: 0.3,
-            }}
-            key={i}
-            r="2"
-            cx={xScale(d[0])}
-            cy={yScale(d[1])}
-            fill="currentColor"
-            stroke="gray"
-            strokeWidth={2}
+        <text
+          x={width - margin.right}
+          y={height - margin.bottom / 2}
+          textAnchor="end"
+          className="current-color p-20 text-xs"
+        >
+          {`${timeFormat(startTime)} - ${timeFormat(endTime)}`}
+        </text>
+        {yScale.ticks(5).map((max) => (
+          <line
+            key={max}
+            x1={margin.left}
+            x2={width - margin.right}
+            y1={yScale(max)}
+            y2={yScale(max)}
+            stroke="currentColor"
+            strokeOpacity="0.1"
           />
         ))}
       </svg>
