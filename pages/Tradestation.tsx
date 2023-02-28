@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
+import Binance from 'binance-api-node'
 import Chart from 'ChartWidget/Chart'
 import { motion, useAnimationControls } from 'framer-motion'
-import Script from 'next/script'
 import { Suspense, useEffect, useState } from 'react'
 import useMeasure from 'react-use-measure'
 
@@ -11,135 +11,66 @@ import Mage from '../mages/old.Mage'
 import MoonPhase from '../Moon/MoonPhase'
 import Retrograde from '../Moon/Retrograde'
 import Moon from '../myModels/Moon'
-import Wheel from '../myModels/Wheel'
 
 const DEBUG = false
 const apiEndpoint = DEBUG ? '/api/' : 'https://api.coingecko.com/api/v3/coins/'
 
-const dummyData = [
-  [0, 0],
-  [2, 11],
-  [4, 8],
-  [20, 77],
-  [30, 26],
-  [40, 42],
-  [50, 68],
-  [60, 18],
-  [70, 38],
-  [80, 18],
-  [100, 100],
-  [120, 40],
-  [140, 58],
-  [160, 90],
-]
-
-interface CoinData {
-  id: string
-  symbol: string
-  name: string
-  asset_platform_id: null | string
-  platforms: Record<string, any>
-  detail_platforms: Record<string, any>
-  block_time_in_minutes: number
-  hashing_algorithm: string
-  categories: any[]
-  public_notice: null | string
-  additional_notices: any[]
-  localization: Record<string, any>
-  description: Record<string, any>
-  links: Record<string, any>
-  image: Record<string, any>
-  country_origin: string
-  genesis_date: string
-  sentiment_votes_up_percentage: number
-  sentiment_votes_down_percentage: number
-  market_cap_rank: number
-  coingecko_rank: number
-  coingecko_score: number
-  developer_score: number
-  community_score: number
-  liquidity_score: number
-  public_interest_score: number
-  market_data: Record<string, any>
-  community_data: Record<string, any>
-  developer_data: Record<string, any>
-  public_interest_stats: Record<string, any>
-  status_updates: any[]
-  last_updated: string
-  tickers: any[]
+const coinNameMap = {
+  bitcoin: { binance: 'BTC', coingecko: 'bitcoin', pair: 'BTCUSDT' },
+  ethereum: { binance: 'ETH', coingecko: 'ethereum', pair: 'ETHUSDT' },
+  tether: { binance: 'USDT', coingecko: 'tether', pair: 'USDTUSD' },
+  binancecoin: { binance: 'BNB', coingecko: 'binancecoin', pair: 'BNBUSDT' },
+  cardano: { binance: 'ADA', coingecko: 'cardano', pair: 'ADAUSDT' },
+  chainlink: { binance: 'LINK', coingecko: 'chainlink', pair: 'LINKUSDT' },
+  polkadot: { binance: 'DOT', coingecko: 'polkadot', pair: 'DOTUSDT' },
+  // 'avalanche-2': { binance: 'AVAX', coingecko: 'avalanche', pair: 'AVAXUSDT' },
 }
 
-const topCoins = [
-  'bitcoin',
-  'ethereum',
-  'tether',
-  'binancecoin',
-  'cardano',
-  'chainlink',
-  'polkadot',
-  'avalanche-2',
-]
-
 const Tradestation = () => {
-  const [data, setData] = useState<CoinData | null>(null)
+  const [data, setData] = useState(null)
   const [coinId, setCoinId] = useState('bitcoin')
-  const [currency, setCurrency] = useState('usd')
   const [newCoinId, setNewCoinId] = useState('bitcoin')
+  const [pair, setPair] = useState('BTCUSDT')
+  const [tradeData, setTradeData] = useState([])
 
+  async function fetchCoinGeckoData(id) {
+    const response = await fetch(`${apiEndpoint}/${id}`)
+    const data = await response.json()
+    return data
+  }
+
+  async function fetchBinanceData(pair) {
+    const response = await fetch(`/api/trades?pair=${pair}`)
+    const tradeData = await response.json()
+    setTradeData(tradeData)
+    return tradeData
+  }
   useEffect(() => {
     const fetchData = async () => {
-      // console.log('Fetching data from', apiEndpoint)
-      const res = await fetch(`${apiEndpoint}/${coinId}`)
+      const coinGeckoData = await fetchCoinGeckoData(coinId)
+      setData(coinGeckoData)
 
-      if (res.ok) {
-        const data = await res.json()
-
-        setData({
-          id: data.id,
-          symbol: data.symbol,
-          name: data.name,
-          asset_platform_id: data.asset_platform_id,
-          platforms: data.platforms,
-          detail_platforms: data.detail_platforms,
-          block_time_in_minutes: data.block_time_in_minutes,
-          hashing_algorithm: data.hashing_algorithm,
-          categories: data.categories,
-          public_notice: data.public_notice,
-          additional_notices: data.additional_notices,
-          localization: data.localization,
-          description: data.description,
-          links: data.links,
-          image: data.image,
-          country_origin: data.country_origin,
-          genesis_date: data.genesis_date,
-          sentiment_votes_up_percentage: data.sentiment_votes_up_percentage,
-          sentiment_votes_down_percentage: data.sentiment_votes_down_percentage,
-          market_cap_rank: data.market_cap_rank,
-          coingecko_rank: data.coingecko_rank,
-          coingecko_score: data.coingecko_score,
-          developer_score: data.developer_score,
-          community_score: data.community_score,
-          liquidity_score: data.liquidity_score,
-          public_interest_score: data.public_interest_score,
-          market_data: data.market_data,
-          community_data: data.community_data,
-          developer_data: data.developer_data,
-          public_interest_stats: data.public_interest_stats,
-          status_updates: data.status_updates,
-          last_updated: data.last_updated,
-          tickers: data.tickers,
-        })
+      if (pair) {
+        const binanceData = await fetchBinanceData(pair)
+        setTradeData(binanceData)
       }
     }
-    // get initial price then update every 10 seconds
+
     fetchData()
     const intervalId = setInterval(fetchData, 10 * 1000)
     return () => clearInterval(intervalId)
-  }, [coinId])
+  }, [coinId, pair])
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    setCoinId(newCoinId)
+  const newFetch = async (coin) => {
+    setCoinId(coin.coingecko)
+    setNewCoinId(coin.coingecko)
+    setPair(coin.pair)
+    await fetchBinanceData(coin.pair)
+  }
+
+  const handleSubmit = (e, coin) => {
+    e.preventDefault()
+    newFetch(coin)
   }
 
   // returns just the first sentence of the coin description
@@ -164,19 +95,18 @@ const Tradestation = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1 }}
-          className="fixed left-20 mt-20 hidden flex-col items-center gap-2 border bg-white/80 p-2 uppercase shadow md:flex"
+          className="fixed left-20 mt-20 hidden flex-col items-center gap-2 border bg-white/80 p-2 uppercase shadow 2xl:flex"
         >
           <h1>👑</h1>
-          {topCoins.map((coin, i) => {
+          {Object.values(coinNameMap).map((coin) => {
             return (
               <p
-                key={i}
+                key={coin.coingecko}
                 onClick={() => {
-                  setCoinId(coin)
-                  setNewCoinId(coin)
+                  newFetch(coin)
                 }}
               >
-                {coin}
+                {coin.coingecko}
               </p>
             )
           })}
@@ -248,12 +178,14 @@ const Tradestation = () => {
                 className=" mx-auto my-2 flex h-56 place-content-center border bg-white/20 pl-2 text-gray-800/60"
                 ref={chartContainer}
               >
-                <Chart
-                  data={dummyData}
-                  width={Math.floor(bounds.width)}
-                  height={Math.floor(bounds.height / 1.15)}
-                  // height={100}
-                />
+                {tradeData.length > 0 && (
+                  <Chart
+                    key={`${coinId}-${pair}`}
+                    data={tradeData}
+                    width={Math.floor(bounds.width)}
+                    height={Math.floor(bounds.height / 1.15)}
+                  />
+                )}
               </div>
               <div className="grid grid-cols-2 place-items-center bg-blue-800/20 py-4 text-center">
                 <MoonPhase lastNewMoon={lastNewMoon} />
@@ -283,7 +215,12 @@ const Tradestation = () => {
                 </p>
               </div>
             </div>
-            <form onSubmit={handleSubmit} className="col-span-auto">
+            {/* <form
+              onSubmit={(e) => {
+                handleSubmit(e, coinId)
+              }}
+              className="col-span-auto"
+            >
               <input
                 type="text"
                 name="coinId"
@@ -298,7 +235,7 @@ const Tradestation = () => {
               >
                 Refresh Data
               </button>
-            </form>
+            </form> */}
           </>
         ) : (
           <div className="flex h-screen place-content-center items-center justify-center">
