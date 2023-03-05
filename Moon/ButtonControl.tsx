@@ -5,7 +5,11 @@ type Props = { controlRef; cameraRef; callback; txtColor }
 
 function ButtonControl({ controlRef, cameraRef, callback, txtColor }: Props) {
   return (
-    <motion.div className="fixed right-20 z-20" animate={{ color: txtColor }}>
+    <motion.div
+      className="fixed right-20 z-20"
+      animate={{ color: txtColor }}
+      transition={{ delay: 1, duration: 3 }}
+    >
       <button onClick={() => defaultCam(controlRef, cameraRef)}>Home</button>
       <button onClick={() => moveTarget(controlRef, 0, 18, 0)}>Look up</button>
 
@@ -19,7 +23,9 @@ function ButtonControl({ controlRef, cameraRef, callback, txtColor }: Props) {
       >
         Move right
       </button>
-      <button onClick={() => callback()}>🌞</button>
+      <button onClick={() => callback()}>
+        {txtColor == '#fff' ? '🌞' : '🌚'}
+      </button>
     </motion.div>
   )
 }
