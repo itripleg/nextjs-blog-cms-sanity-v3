@@ -48,13 +48,15 @@ function Chart({ data, width, height }: Props) {
           d={path}
           stroke="currentColor"
           fill="none"
-          strokeWidth="1.5"
+          strokeWidth="1"
         />
         {yScale.ticks(5).map((max) => (
           <text
             y={yScale(max)}
             key={max}
-            className="current-color p-20 text-xs"
+            className="p-20 text-xs"
+            stroke="currentColor"
+            strokeWidth=".1"
           >
             {max}
           </text>
@@ -66,8 +68,10 @@ function Chart({ data, width, height }: Props) {
             transition={{ delay: 0.5 * i }}
             x={xScale(max)}
             key={i}
-            fill="current-color"
+            // fill="current-color"
             className="current-color p-20 text-xs"
+            stroke="currentColor"
+            strokeWidth=".1"
           >
             {format(max, 'MMM d')}
           </motion.text>
@@ -77,6 +81,7 @@ function Chart({ data, width, height }: Props) {
           y={height - margin.bottom / 2}
           textAnchor="end"
           className="current-color p-20 text-xs"
+          // stroke="currentColor"
         >
           {`${timeFormat(startTime)} - ${timeFormat(endTime)}`}
         </text>
@@ -88,7 +93,7 @@ function Chart({ data, width, height }: Props) {
             y1={yScale(max)}
             y2={yScale(max)}
             stroke="currentColor"
-            strokeOpacity="0.1"
+            strokeOpacity="0.2"
           />
         ))}
       </svg>
