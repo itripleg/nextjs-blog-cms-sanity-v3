@@ -4,6 +4,8 @@ import Moon from 'myModels/Moon'
 import { Suspense } from 'react'
 import * as cam from 'utils/CamTools'
 
+// import Sundial from '../myModels/Sundial'
+
 type Props = { cameraRef: any; controlRef: any; lightRef: any }
 
 export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
@@ -15,6 +17,7 @@ export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
     <>
       <Suspense>
         <Canvas className="">
+          {/* <Sundial scale={20} /> */}
           <directionalLight
             ref={lightRef}
             intensity={2}
@@ -43,7 +46,7 @@ export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
             onClick={getMoonPosition}
             color="blue"
             scale={3.4}
-            position={[4, 0, 0]}
+            position={[0, 0, 0]}
           />
           <Moon scale={50} position={[100, 120, 150]} />
         </Canvas>
