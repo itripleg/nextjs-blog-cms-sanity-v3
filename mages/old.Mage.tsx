@@ -91,24 +91,16 @@ export default function Mage({ controls }: Props) {
       </motion.a>
       {/* Orb */}
       <motion.a
-        // animate={{ rotateY: 180, opacity: 1 }}
-        // initial={{ rotateY: 180 }}
-        // animate={{ hidden }}
-        // variants={mageVariants}
-        // className={`${menuIcon}`}
         onClick={() => {
-          // toggleMenu()
           setMenuIcon('hidden')
           controls.start('jump').then(() => {
             // controls.start()
           })
-          // setShowIcons()
         }}
       >
         🔮
       </motion.a>
 
-      {/* Hydration error... */}
       <motion.a
         animate={{}}
         variants={mageVariants}
