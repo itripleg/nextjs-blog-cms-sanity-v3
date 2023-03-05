@@ -7,13 +7,12 @@ import gsap from 'gsap'
 import ButtonControl from 'Moon/ButtonControl'
 import CoingeckoData from 'Moon/CoingeckoData'
 import SpaceScene from 'Moon/SpaceScene'
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useMeasure from 'react-use-measure'
 
 import Mage from '../mages/old.Mage'
 import MoonPhase from '../Moon/MoonPhase'
 import Retrograde from '../Moon/Retrograde'
-import Moon from '../myModels/Moon'
 
 const DEBUG = false
 const apiEndpoint = DEBUG ? '/api/' : 'https://api.coingecko.com/api/v3/coins/'
@@ -35,6 +34,20 @@ const Tradestation = () => {
   const [newCoinId, setNewCoinId] = useState('bitcoin')
   const [pair, setPair] = useState('BTCUSDT')
   const [tradeData, setTradeData] = useState([])
+
+  const times = { day: '#fff', night: '#000' }
+  const [time, setTime] = useState('#fff')
+  const [bgColor, setBgColor] = useState('#fff')
+  const [txtColor, setTxtColor] = useState('#000')
+
+  const firstSentence = data ? getFirstSentence(data?.description.en) : null
+
+  const [chartContainer, bounds] = useMeasure()
+  const mageControls = useAnimationControls()
+
+  const cameraRef = useRef(null)
+  const controlRef = useRef(null)
+  const lightRef = useRef(null)
 
   async function fetchCoinGeckoData(id) {
     const response = await fetch(`${apiEndpoint}/${id}`)
@@ -83,20 +96,6 @@ const Tradestation = () => {
     return firstSentence + '.'
   }
 
-  const firstSentence = data ? getFirstSentence(data?.description.en) : null
-
-  const [chartContainer, bounds] = useMeasure()
-  const mageControls = useAnimationControls()
-
-  const cameraRef = useRef(null)
-  const controlRef = useRef(null)
-  const lightRef = useRef(null)
-
-  const times = { day: '#fff', night: '#000' }
-  const [time, setTime] = useState('#fff')
-  const [bgColor, setBgColor] = useState('#fff')
-  const [txtColor, setTxtColor] = useState('#000')
-
   const dayNight = () => {
     setTime(time == times.day ? times.night : times.day)
     bgColor == '#fff' ? setBgColor('#000') : setBgColor('#fff')
@@ -116,12 +115,6 @@ const Tradestation = () => {
         transition={{ duration: 3 }}
         className="mx-auto grid max-w-4xl flex-shrink grid-cols-1 gap-y-20 p-2 scrollbar-thin scrollbar-track-blue-800"
       >
-        <ButtonControl
-          txtColor={null}
-          controlRef={controlRef}
-          cameraRef={cameraRef}
-          callback={dayNight}
-        />
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.8, color: txtColor, backgroundColor: bgColor }}
@@ -142,6 +135,7 @@ const Tradestation = () => {
             )
           })}
         </motion.div>
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -161,6 +155,14 @@ const Tradestation = () => {
             lightRef={lightRef}
           />
         </motion.div>
+        <div className="absolute right-20">
+          <ButtonControl
+            txtColor={txtColor}
+            controlRef={controlRef}
+            cameraRef={cameraRef}
+            callback={dayNight}
+          />
+        </div>
         {data ? (
           <>
             <div className="text-center text-6xl">
@@ -204,7 +206,7 @@ const Tradestation = () => {
             <div className="info">
               <motion.div
                 animate={{ color: txtColor, backgroundColor: bgColor }}
-                transition={{ delay: 3, duration: 3 }}
+                transition={{ delay: 2, duration: 3 }}
                 className=" mx-auto my-2 flex h-56 place-content-center border pl-2 opacity-60"
                 ref={chartContainer}
               >
