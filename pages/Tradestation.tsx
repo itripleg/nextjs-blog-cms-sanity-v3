@@ -1,10 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import { Environment, OrbitControls } from '@react-three/drei'
-import { Canvas } from '@react-three/fiber'
+
 import Binance from 'binance-api-node'
 import Chart from 'ChartWidget/Chart'
 import { motion, useAnimationControls } from 'framer-motion'
-import { Suspense, useEffect, useState } from 'react'
+import gsap from 'gsap'
+import ButtonControl from 'Moon/ButtonControl'
+import CoingeckoData from 'Moon/CoingeckoData'
+import SpaceScene from 'Moon/SpaceScene'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import useMeasure from 'react-use-measure'
 
 import Mage from '../mages/old.Mage'
@@ -82,26 +85,54 @@ const Tradestation = () => {
 
   const firstSentence = data ? getFirstSentence(data?.description.en) : null
 
-  // TODO: move to MoonPhase
-  const lastNewMoon = new Date(2023, 0, 21, 21, 53)
-
   const [chartContainer, bounds] = useMeasure()
   const mageControls = useAnimationControls()
 
+  const cameraRef = useRef(null)
+  const controlRef = useRef(null)
+  const lightRef = useRef(null)
+
+  const times = { day: '#fff', night: '#000' }
+  const [time, setTime] = useState('#fff')
+  const [bgColor, setBgColor] = useState('#fff')
+  const [txtColor, setTxtColor] = useState('#000')
+
+  const dayNight = () => {
+    setTime(time == times.day ? times.night : times.day)
+    bgColor == '#fff' ? setBgColor('#000') : setBgColor('#fff')
+    txtColor == '#000' ? setTxtColor('#fff') : setTxtColor('#000')
+
+    const newIntensity = time == times.day ? 0.3 : 1
+    gsap.to(lightRef.current, {
+      intensity: newIntensity,
+      duration: 2.5,
+    })
+  }
+
   if (!DEBUG) {
     return (
-      <div className="mx-auto grid max-w-4xl flex-shrink grid-cols-1 gap-y-20 p-2 scrollbar-thin scrollbar-track-blue-800">
+      <motion.div
+        animate={{ color: txtColor }}
+        transition={{ duration: 3 }}
+        className="mx-auto grid max-w-4xl flex-shrink grid-cols-1 gap-y-20 p-2 scrollbar-thin scrollbar-track-blue-800"
+      >
+        <ButtonControl
+          txtColor={null}
+          controlRef={controlRef}
+          cameraRef={cameraRef}
+          callback={dayNight}
+        />
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
+          animate={{ opacity: 0.8, color: txtColor, backgroundColor: bgColor }}
+          transition={{ duration: 3, delay: 2 }}
           className="fixed left-20 mt-20 hidden flex-col items-center gap-2 border bg-white/80 p-2 uppercase shadow 2xl:flex"
         >
           <h1>👑</h1>
-          {Object.values(coinNameMap).map((coin) => {
+          {Object.values(coinNameMap).map((coin, i) => {
             return (
               <p
-                key={coin.coingecko}
+                key={i}
                 onClick={() => {
                   newFetch(coin)
                 }}
@@ -120,18 +151,15 @@ const Tradestation = () => {
         </motion.div>
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 4, delay: 3 }}
-          className="absolute -z-40 -m-2 h-full w-full overflow-hidden "
+          animate={{ opacity: 1, backgroundColor: bgColor }}
+          transition={{ duration: 3, delay: 1 }}
+          className="absolute left-0 -z-40 -m-2 h-[1500px] w-full overflow-hidden "
         >
-          <Suspense>
-            <Canvas>
-              <Environment preset="sunset" />
-              <ambientLight />
-              <OrbitControls autoRotate={true} autoRotateSpeed={0.1} />
-              <Moon scale={3.4} />
-            </Canvas>
-          </Suspense>
+          <SpaceScene
+            cameraRef={cameraRef}
+            controlRef={controlRef}
+            lightRef={lightRef}
+          />
         </motion.div>
         {data ? (
           <>
@@ -166,16 +194,18 @@ const Tradestation = () => {
             <div className="max-h-[400px]">
               <motion.p
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 1 }}
+                animate={{ opacity: 0.7, backgroundColor: bgColor }}
+                transition={{ delay: 2, duration: 3 }}
                 className="p-8 text-center shadow"
               >
                 {firstSentence}
               </motion.p>
-            </div>{' '}
-            <div className="info border">
-              <div
-                className=" mx-auto my-2 flex h-56 place-content-center border bg-white/20 pl-2 text-gray-800/60"
+            </div>
+            <div className="info">
+              <motion.div
+                animate={{ color: txtColor, backgroundColor: bgColor }}
+                transition={{ delay: 3, duration: 3 }}
+                className=" mx-auto my-2 flex h-56 place-content-center border pl-2 opacity-60"
                 ref={chartContainer}
               >
                 {tradeData.length > 0 && (
@@ -186,56 +216,13 @@ const Tradestation = () => {
                     height={Math.floor(bounds.height / 1.15)}
                   />
                 )}
-              </div>
+              </motion.div>
               <div className="grid grid-cols-2 place-items-center bg-blue-800/20 py-4 text-center">
-                <MoonPhase lastNewMoon={lastNewMoon} />
+                <MoonPhase />
                 <Retrograde />
               </div>
             </div>
-            <div className="flex flex-col pb-8 text-center lg:p-12">
-              <div className="mx-auto flex lg:flex-col">
-                <motion.img src={data.image.small} />
-              </div>
-              <div>
-                <p>
-                  All time high: $
-                  {data.market_data.ath.usd.toLocaleString('en-US')}
-                </p>
-                <p>
-                  24 Hour High: $
-                  {data.market_data.high_24h.usd.toLocaleString('en-US')}
-                </p>
-                <p>
-                  24 Hour Low: $
-                  {data.market_data.low_24h.usd.toLocaleString('en-US')}
-                </p>
-                <p>
-                  Volume: $
-                  {data.market_data.total_volume.usd.toLocaleString('en-US')}
-                </p>
-              </div>
-            </div>
-            {/* <form
-              onSubmit={(e) => {
-                handleSubmit(e, coinId)
-              }}
-              className="col-span-auto"
-            >
-              <input
-                type="text"
-                name="coinId"
-                value={newCoinId}
-                onChange={(event) => setNewCoinId(event.target.value)}
-                className="mb-20 h-20 w-full  text-center uppercase tracking-widest shadow-lg"
-              />
-
-              <button
-                type="submit"
-                className=" w-full bg-blue-800 text-white/90 "
-              >
-                Refresh Data
-              </button>
-            </form> */}
+            <CoingeckoData data={data} />
           </>
         ) : (
           <div className="flex h-screen place-content-center items-center justify-center">
@@ -246,9 +233,9 @@ const Tradestation = () => {
           </div>
         )}
         <div className="flex gap-8 overflow-x-scroll text-center scrollbar scrollbar-track-blue-800 scrollbar-thumb-white/60">
-          {data?.tickers.map((ticker, i) => (
+          {data?.tickers.map((ticker: any, i: number) => (
             <>
-              <div className="p-4">
+              <div key={i} className="p-4">
                 <h1>{ticker.market.name}</h1>
                 <p>${ticker.last.toLocaleString('en-US')}</p>
                 <p>
@@ -258,7 +245,7 @@ const Tradestation = () => {
             </>
           ))}
         </div>
-      </div>
+      </motion.div>
     )
   } else {
     console.log(data)
