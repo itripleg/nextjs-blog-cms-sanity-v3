@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import type { Post } from 'lib/sanity.queries'
 import Office from 'myModels/Office'
 import Link from 'next/link'
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 export default function HeroPost(
   props: Pick<
@@ -16,6 +16,17 @@ export default function HeroPost(
   >
 ) {
   const { title, coverImage, date, excerpt, author, slug } = props
+  const [response, setResponse] = useState('')
+
+  const fetchResponse = () => {
+    console.log('fetching one-liner')
+    fetch('/api/cheeky-one-liner')
+      .then((res) => res.json())
+      .then((data) => setResponse(data.response))
+  }
+  useEffect(() => {
+    // fetchResponse()
+  }, [])
   // if (title.includes('office')) {
   // }
   return (
@@ -70,6 +81,7 @@ export default function HeroPost(
         </div>
         <div>
           {excerpt && <p className="mb-4 text-lg leading-relaxed">{excerpt}</p>}
+          {/* {excerpt && <p className="mb-4 text-lg leading-relaxed">{response}</p>} */}
           {author && (
             <AuthorAvatar name={author.name} picture={author.picture} />
           )}
