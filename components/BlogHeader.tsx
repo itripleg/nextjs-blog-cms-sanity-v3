@@ -1,7 +1,6 @@
-import { PortableText } from '@portabletext/react'
 import { motion, useAnimationControls } from 'framer-motion'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Mage from '../mages/old.Mage'
 import styles from './BlogHeader.module.css'
@@ -16,7 +15,18 @@ export default function BlogHeader({
   level: 1 | 2
 }) {
   const controls = useAnimationControls()
-  const [direction, setDirection] = useState(true)
+
+  const [response, setResponse] = useState('')
+
+  const fetchResponse = () => {
+    console.log('fetching one-liner')
+    fetch('/api/cheeky-one-liner')
+      .then((res) => res.json())
+      .then((data) => setResponse(data.response))
+  }
+  useEffect(() => {
+    fetchResponse()
+  }, [])
 
   switch (level) {
     case 1:
@@ -28,21 +38,20 @@ export default function BlogHeader({
             transition={{ duration: 1 }}
           >
             <header className="mt-16 mb-10 flex flex-col items-center md:mb-12 md:flex-row md:justify-between">
-              <motion.h1
+              <motion.h4
                 initial={{ y: -100 }}
                 animate={{ y: 0, scale: 1.3, paddingBottom: 20 }}
                 transition={{ duration: 2, type: 'spring', bounce: 0.1 }}
-                className=" text-6xl font-bold leading-tight tracking-tighter md:pr-8 md:text-8xl"
+                className="  text-6xl font-bold leading-tight tracking-tighter md:pr-8 md:text-8xl"
               >
                 {title}
-              </motion.h1>
-              {/* mobile mage */}
-              <div className="md:hidden">
+              </motion.h4>
+              <div className="md:hidden" onClick={fetchResponse}>
                 <Mage controls={controls} />
               </div>
               {/* big mage */}
               <motion.div
-                animate={{ x: 0 }}
+                animate={{ x: 0, y: 10 }}
                 transition={{ delay: 0, duration: 1 }}
                 // className="hidden 2xl:block"
                 className="hidden md:block"
@@ -50,11 +59,14 @@ export default function BlogHeader({
                 <Mage controls={controls} />
               </motion.div>
 
-              <h4
-                className={`mt-5 text-center text-lg md:pl-8 md:text-left ${styles.portableText}`}
+              <motion.h4
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2, duration: 1 }}
+                className={`mt-5 min-w-full text-center text-lg md:pl-8 md:text-left ${styles.portableText}`}
               >
-                <PortableText value={description} />
-              </h4>
+                {response}
+              </motion.h4>
             </header>
           </motion.div>
         </>
