@@ -993,6 +993,7 @@ export default function Model(props) {
           material={materials['Material.007']}
         />
       </group>
+      {/* fish */}
       <mesh
         castShadow
         receiveShadow
