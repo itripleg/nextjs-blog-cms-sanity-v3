@@ -1,11 +1,7 @@
 import { motion } from 'framer-motion'
-import React from 'react'
 
-interface MoonPhaseProps {
-  lastNewMoon: Date
-}
-
-const MoonPhase: React.FC<MoonPhaseProps> = ({ lastNewMoon }) => {
+const MoonPhase = () => {
+  const lastNewMoon = new Date(2023, 0, 21, 21, 53)
   const synodicMonth = 29.530588853 // length of a synodic month in days
   const now = new Date()
   const timeSinceLastNewMoon =
