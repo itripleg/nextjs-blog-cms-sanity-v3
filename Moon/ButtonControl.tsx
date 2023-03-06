@@ -10,6 +10,14 @@ function ButtonControl({ controlRef, cameraRef, callback, txtColor }: Props) {
       animate={{ color: txtColor }}
       transition={{ delay: 1, duration: 3 }}
     >
+      <button
+        onClick={() => {
+          moveTarget(controlRef, 600, 600, 600)
+          moveCamPosition({ cameraRef, x: 666, y: 666, z: 666, scale: 3 })
+        }}
+      >
+        Sundial
+      </button>
       <button onClick={() => defaultCam(controlRef, cameraRef)}>Home</button>
       <button onClick={() => moveTarget(controlRef, 0, 18, 0)}>Look up</button>
 

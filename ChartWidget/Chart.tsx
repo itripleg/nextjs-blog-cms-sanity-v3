@@ -9,7 +9,7 @@ type Props = {
   height: number
 }
 
-const margin = { top: 20, right: 0, bottom: 0, left: 40 }
+const margin = { top: 20, right: 0, bottom: 20, left: 40 }
 
 function Chart({ data, width, height }: Props) {
   const transformedData = data.map((trade) => [
@@ -56,7 +56,8 @@ function Chart({ data, width, height }: Props) {
             key={max}
             className="p-20 text-xs"
             stroke="currentColor"
-            strokeWidth=".1"
+            fill="currentColor"
+            strokeWidth=".2"
           >
             {max}
           </text>
@@ -68,8 +69,8 @@ function Chart({ data, width, height }: Props) {
             transition={{ delay: 0.5 * i }}
             x={xScale(max)}
             key={i}
-            // fill="current-color"
-            className="current-color p-20 text-xs"
+            fill="current-color"
+            className="current-color p-20 text-sm"
             stroke="currentColor"
             strokeWidth=".1"
           >
@@ -80,8 +81,10 @@ function Chart({ data, width, height }: Props) {
           x={width - margin.right}
           y={height - margin.bottom / 2}
           textAnchor="end"
-          className="current-color p-20 text-xs"
-          // stroke="currentColor"
+          className="p-20 text-lg"
+          stroke="currentColor"
+          strokeWidth=".1"
+          fill="currentColor"
         >
           {`${timeFormat(startTime)} - ${timeFormat(endTime)}`}
         </text>
@@ -93,7 +96,8 @@ function Chart({ data, width, height }: Props) {
             y1={yScale(max)}
             y2={yScale(max)}
             stroke="currentColor"
-            strokeOpacity="0.2"
+            fill="currentColor"
+            // strokeOpacity="0.2"
           />
         ))}
       </svg>
