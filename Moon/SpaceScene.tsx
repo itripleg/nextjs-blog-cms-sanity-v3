@@ -5,8 +5,12 @@ import {
   Stars,
 } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
+import gsap from 'gsap'
 import Moon from 'myModels/Moon'
 import Sundial from 'myModels/Sundial'
+import { Flecha } from 'ouija/Flecha'
+import { OuijaBoard } from 'ouija/OuijaBoard'
+import OuijAi from 'ouija/OuijAi'
 import { Suspense } from 'react'
 import { useRef } from 'react'
 import * as cam from 'utils/CamTools'
@@ -27,21 +31,40 @@ export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
 
   const spotRef = useRef(null)
   function pointSpotlight() {
-    spotRef.current.lookAt(positions.sundial)
+    console.log(spotRef.current)
+    gsap.to(spotRef.current.target.position, {
+      x: positions.sundial[0],
+      y: positions.sundial[1],
+      z: positions.sundial[2],
+      duration: 3,
+    })
   }
 
   return (
     <>
       <Suspense>
         <Canvas className="">
+          <OuijaBoard position={[-600, -600 - 600 - 600]} />
+          {/* <OuijaBoard /> */}
+          {/* <Flecha /> */}
           {/* <Book /> */}
-          <Sundial scale={2.5} position={positions.sundial} />
+          <Sundial
+            scale={2.5}
+            position={positions.sundial}
+            onClick={() => pointSpotlight()}
+          />
           {/* @ts-ignore */}
           <SpotLight
             ref={spotRef}
             position={[666, 666, 666]}
             lookAt={[0, 1000, 1000]}
             key={undefined}
+            color={'white'}
+            angle={1}
+            intensity={1}
+            attenuation={150}
+            distance={150}
+            anglePower={5}
           />
           <directionalLight
             ref={lightRef}

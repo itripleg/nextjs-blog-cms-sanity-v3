@@ -80,16 +80,13 @@ export default function InitialInfo({
               className="flex gap-8 overflow-x-scroll text-center overflow-y-hidden scrollbar scrollbar-track-blue-800 scrollbar-thumb-white/60"
             >
               {data?.tickers.map((ticker: any, i: number) => (
-                <>
-                  <div key={i} className="p-4">
-                    <h1>{ticker.market.name}</h1>
-                    <p>${ticker.last.toLocaleString('en-US')}</p>
-                    <p>
-                      Volume:{' '}
-                      {Math.floor(ticker.volume).toLocaleString('en-US')}
-                    </p>
-                  </div>
-                </>
+                <div key={i} className="p-4">
+                  <h1>{ticker.market.name}</h1>
+                  <p>${ticker.last.toLocaleString('en-US')}</p>
+                  <p>
+                    Volume: {Math.floor(ticker.volume).toLocaleString('en-US')}
+                  </p>
+                </div>
               ))}
             </motion.div>
           </>

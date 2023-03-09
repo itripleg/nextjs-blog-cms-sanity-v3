@@ -14,11 +14,10 @@ export default function Model(props) {
         ref={meshRef}
         animate={{ rotateY: 360 }} // Spin the mesh 360 degrees around the Y-axis
         transition={{ ease: 'linear', duration: 50000, repeat: Infinity }} // Set the loop property to Infinity to create a continuous animation loop
-        castShadow
-        receiveShadow
+        // castShadow
+        receiveShadow={true}
         geometry={nodes.Moon.geometry}
         material={nodes.Moon.material}
-        // rotation={[0, 0.54, -0.01]}
         onClick={getInfo}
       />
     </group>

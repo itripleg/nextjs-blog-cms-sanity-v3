@@ -4,9 +4,11 @@ import Binance from 'binance-api-node'
 import Chart from 'ChartWidget/Chart'
 import { motion, useAnimationControls } from 'framer-motion'
 import gsap from 'gsap'
+import Arb from 'Moon/Arb'
 import ButtonControl from 'Moon/ButtonControl'
 import InitialInfo from 'Moon/InitialInfo'
 import MoonLoading from 'Moon/MoonLoading'
+import MoonPhase from 'Moon/MoonPhase'
 import PriceHeader from 'Moon/PriceHeader'
 import SpaceScene from 'Moon/SpaceScene'
 import { useEffect, useRef, useState } from 'react'
@@ -34,6 +36,7 @@ const Tradestation = () => {
   const [newCoinId, setNewCoinId] = useState('bitcoin')
   const [pair, setPair] = useState('BTCUSDT')
   const [tradeData, setTradeData] = useState([])
+  const [page, setPage] = useState('initial')
 
   const times = { day: '#fff', night: '#000' }
   const [time, setTime] = useState('#fff')
@@ -107,6 +110,12 @@ const Tradestation = () => {
       duration: 2.5,
     })
   }
+  const initialPage = useRef(null)
+  function doSomething() {
+    gsap.to(initialPage, { opacity: 0 })
+  }
+
+  const [displayWindow, setDisplayWindow] = useState('home')
 
   const [chartContainer, bounds] = useMeasure()
   if (!DEBUG) {
@@ -115,7 +124,7 @@ const Tradestation = () => {
         <motion.div
           animate={{ color: txtColor }}
           transition={{ duration: 3 }}
-          className="mx-auto grid max-w-4xl flex-shrink grid-cols-1 gap-y-20 overflow-hidden scrollbar-thin scrollbar-track-blue-800"
+          className="mx-auto grid max-w-7xl  flex-shrink grid-cols-1 gap-y-20 overflow-hidden scrollbar-thin scrollbar-track-blue-800"
         >
           <motion.div
             initial={{ opacity: 0 }}
@@ -149,8 +158,9 @@ const Tradestation = () => {
           >
             <Mage controls={mageControls} />
           </motion.div>
-          <div className="absolute right-20 z-20">
+          <div className="absolute right-20 top-10 z-20">
             <ButtonControl
+              setDisplayWindow={setDisplayWindow}
               txtColor={txtColor}
               controlRef={controlRef}
               cameraRef={cameraRef}
@@ -159,39 +169,53 @@ const Tradestation = () => {
           </div>
           {/* If theres data loaded: */}
           {data ? (
-            // Main window
-            <>
-              <div className="overflow-hidden">
-                <PriceHeader data={data} />
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 1 }}
-                  className="h-4/5 bg-white/30 p-6"
-                  ref={chartContainer}
-                >
-                  <Chart
-                    data={tradeData}
-                    width={Math.floor(bounds.width)}
-                    // height={Math.floor(bounds.height / 0.9)}
-                    height={Math.floor(bounds.height)}
-                  />
-                </motion.div>
-              </div>
-              <div className="grid grid-cols-2 border">
-                <div className="col-span-2">
-                  <InitialInfo
-                    data={data}
-                    tradeData={tradeData}
-                    coinId={coinId}
-                    pair={pair}
-                    firstSentence={firstSentence}
-                    txtColor={txtColor}
-                    bgColor={bgColor}
-                  />
+            displayWindow === 'home' ? (
+              <>
+                {/* Main window */}
+                <div className="">
+                  <div className="overflow-hidden" ref={initialPage}>
+                    <PriceHeader data={data} />
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 1 }}
+                      className="h-4/5 bg-white/30 p-6"
+                      ref={chartContainer}
+                    >
+                      <Chart
+                        data={tradeData}
+                        width={Math.floor(bounds.width)}
+                        // height={Math.floor(bounds.height / 0.9)}
+                        height={Math.floor(bounds.height / 1.08)}
+                      />
+                    </motion.div>
+                  </div>
+                  <div className="grid grid-cols-2 border">
+                    <div className="col-span-2">
+                      <InitialInfo
+                        data={data}
+                        tradeData={tradeData}
+                        coinId={coinId}
+                        pair={pair}
+                        firstSentence={firstSentence}
+                        txtColor={txtColor}
+                        bgColor={bgColor}
+                      />
+                    </div>
+                  </div>
                 </div>
+              </>
+            ) : displayWindow === 'arb' ? (
+              <div className="p-2">
+                <Arb />
               </div>
-            </>
+            ) : displayWindow === 'moon' ? (
+              <div className="h-2/3">
+                <MoonPhase />
+              </div>
+            ) : (
+              <div></div>
+            )
           ) : (
             <MoonLoading />
           )}
