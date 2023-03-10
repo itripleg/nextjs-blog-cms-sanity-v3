@@ -31,12 +31,12 @@ export default function Space({}: Props) {
       transition={{ delay: 0, duration: 3 }}
       className="h-screen"
     >
-      <ButtonControl
+      {/* <ButtonControl
         txtColor={time}
         callback={dayNight}
         controlRef={controlRef}
         cameraRef={cameraRef}
-      />
+      /> */}
 
       <SpaceScene
         lightRef={lightRef}
