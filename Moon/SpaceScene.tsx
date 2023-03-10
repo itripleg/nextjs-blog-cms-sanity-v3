@@ -22,7 +22,7 @@ import Book from './Book'
 type Props = { cameraRef: any; controlRef: any; lightRef: any }
 
 export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
-  const positions = { home: [0, 0, 0], sundial: [600, 600, 600] }
+  const positions = { home: [0, 0, 0], sundial: [600, 610, 600] }
 
   function getMoonPosition(position) {
     // console.log('object position:', position)
