@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 
-import Binance from 'binance-api-node'
 import Chart from 'ChartWidget/Chart'
 import { motion, useAnimationControls } from 'framer-motion'
 import gsap from 'gsap'
@@ -10,6 +9,7 @@ import InitialInfo from 'Moon/InitialInfo'
 import MoonLoading from 'Moon/MoonLoading'
 import MoonPhase from 'Moon/MoonPhase'
 import PriceHeader from 'Moon/PriceHeader'
+import Retrograde from 'Moon/Retrograde'
 import SpaceScene from 'Moon/SpaceScene'
 import { useEffect, useRef, useState } from 'react'
 import useMeasure from 'react-use-measure'
@@ -210,8 +210,9 @@ const Tradestation = () => {
                 <Arb />
               </div>
             ) : displayWindow === 'moon' ? (
-              <div className="h-2/3">
+              <div className="bg-purple-800 p-20">
                 <MoonPhase />
+                <Retrograde />
               </div>
             ) : (
               <div></div>
