@@ -24,14 +24,14 @@ function ButtonControl({
       >
         Home
       </button>
-      <button
+      {/* <button
         onClick={() => {
           moveTarget(controlRef, -666, -666, -666)
           setDisplayWindow('moon')
         }}
       >
         Moon
-      </button>
+      </button> */}
       <button
         onClick={() => {
           moveTarget(controlRef, 600, 600, 600)
@@ -48,6 +48,7 @@ function ButtonControl({
       </button> */}
       <button
         onClick={() => {
+          defaultCam(controlRef, cameraRef)
           moveCamPosition({ cameraRef, x: 20, y: 0, z: 2, scale: 3 })
           setDisplayWindow('arb')
         }}
