@@ -1,7 +1,13 @@
 import { motion } from 'framer-motion'
 import { defaultCam, moveCamPosition, moveTarget } from 'utils/CamTools'
 
-type Props = { controlRef; cameraRef; callback; txtColor; setDisplayWindow }
+type Props = {
+  controlRef
+  cameraRef
+  callback
+  txtColor
+  setDisplayWindow
+}
 
 function ButtonControl({
   controlRef,
@@ -12,7 +18,7 @@ function ButtonControl({
 }: Props) {
   return (
     <motion.div
-      className="fixed right-20 z-20"
+      className="z-20"
       animate={{ color: txtColor }}
       transition={{ delay: 1, duration: 3 }}
     >
@@ -20,26 +26,21 @@ function ButtonControl({
         onClick={() => {
           defaultCam(controlRef, cameraRef)
           setDisplayWindow('home')
+          controlRef.current.autoRotate = false
         }}
       >
         Home
       </button>
-      {/* <button
-        onClick={() => {
-          moveTarget(controlRef, -666, -666, -666)
-          setDisplayWindow('moon')
-        }}
-      >
-        Moon
-      </button> */}
       <button
         onClick={() => {
-          moveTarget(controlRef, 600, 600, 600)
-          moveCamPosition({ cameraRef, x: 666, y: 666, z: 666, scale: 3 })
-          setDisplayWindow('')
+          moveTarget(controlRef, 0, 0, 0)
+          moveCamPosition({ cameraRef, x: 600, y: 666, z: 661, scale: 3 })
+          // moveCamPosition({ cameraRef, x: 0, y: 0, z: 0, scale: 3 })
+          setDisplayWindow('ouija')
+          controlRef.current.autoRotate = true
         }}
       >
-        Sundial
+        Ouija
       </button>
       {/* <button onClick={() => moveTarget(controlRef, 0, 18, 0)}>Look up</button> */}
 
@@ -48,7 +49,9 @@ function ButtonControl({
       </button> */}
       <button
         onClick={() => {
-          defaultCam(controlRef, cameraRef)
+          // defaultCam(controlRef, cameraRef)
+          moveTarget(controlRef, 0, 0, 0)
+          // controlRef.current.autoRotate = false
           moveCamPosition({ cameraRef, x: 20, y: 0, z: 2, scale: 3 })
           setDisplayWindow('arb')
         }}
