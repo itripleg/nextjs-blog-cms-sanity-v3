@@ -1,7 +1,11 @@
-import { Environment, PresentationControls } from '@react-three/drei'
-import { Canvas } from '@react-three/fiber'
+import {
+  Environment,
+  PerspectiveCamera,
+  PresentationControls,
+} from '@react-three/drei'
+import { Canvas, useThree } from '@react-three/fiber'
 import { motion, useAnimation } from 'framer-motion'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 // import CrystalBall from "../components/CrystalBall";
 import { Flecha } from './Flecha'
@@ -16,10 +20,15 @@ function OuijAi({}: Props) {
 
   async function handleKeyPress(key: any) {
     // get the last key pressed and move ouija arrow
-    if (key) {
-      let lastKey = key[key.length - 1]
+    let lastKey = key[key.length - 1]
+    if (lastKey) {
       await animationControls.start(lastKey)
     }
+  }
+
+  function getFirstSentence(paragraph: string) {
+    const firstSentence = paragraph.match(/^[^\.\?!]*/)[0]
+    return firstSentence + '.'
   }
 
   async function onSubmit(event: any) {
@@ -39,11 +48,12 @@ function OuijAi({}: Props) {
       )
     }
     // console.log(data.result);
-    const reply = String(data.result.substring('['))
-    setResult(data.result)
-    const regex = /[1-9][0-9]* [a-zA-Z]+ [a-zA-Z]+/
-    const matchedResult = reply.match(regex)
+    // const reply = String(data.result.substring('['))
+    const reply = data ? getFirstSentence(data.result) : null
+    // @ts-ignore
+    setResult(reply)
     console.log('reply is ', reply)
+    // TODO extract array from string
   }
 
   return (
@@ -51,13 +61,13 @@ function OuijAi({}: Props) {
       <motion.div
         initial={{ opacity: 0, scale: 1 }}
         animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-        transition={{ duration: 1 }}
-        className=" mx-auto h-[320px] w-full max-w-4xl lg:h-[420px]"
+        transition={{ delay: 1, duration: 1 }}
+        className="mx-auto flex h-[300px] max-w-4xl justify-center lg:h-[1000px]"
       >
-        <div className="h-[50px]" />
-        {/* @ts-ignore */}
-        <Canvas touchaction={'none'} camera={{ zoom: 1, position: [0, 0, 7] }}>
+        <Canvas camera={{ zoom: 1, position: [0, 0, 6] }}>
           <PresentationControls
+            // cameraPosition={[0, 0, 10]}
+            // defaultCameraPosition={[0, 0, 10]}
             enabled={true} // the controls can be disabled by setting this to false
             global={true} // Spin globally or by dragging the model
             cursor={false} // Whether to toggle cursor style on drag
@@ -67,7 +77,7 @@ function OuijAi({}: Props) {
             rotation={[0, 0, 0]} // Default rotation
             polar={[-1, Math.PI / 2]} // Vertical limits
             azimuth={[-0.5, 0.5]} // Horizontal limits
-            config={{ zoom: 10, mass: 3, tension: 170, friction: 26 }} // Spring config
+            config={{ zoom: 5, mass: 3, tension: 170, friction: 26 }} // Spring config
           >
             <Flecha
               // @ts-ignore
@@ -85,7 +95,7 @@ function OuijAi({}: Props) {
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
       >
-        <h1 className="text-center text-2xl uppercase tracking-[20px] text-white">
+        <h1 className="text-center text-2xl uppercase tracking-[20px] ">
           <span className="text-red-800">Ask </span>
           Away
         </h1>
@@ -94,7 +104,7 @@ function OuijAi({}: Props) {
             <input
               type="text"
               value={questionInput}
-              className="w-full max-w-4xl p-2 text-black"
+              className="w-full max-w-4xl rounded-md border p-2 text-black"
               onChange={(e) => {
                 setQuestionInput(e.target.value)
                 handleKeyPress(e.target.value.toLowerCase())
@@ -104,7 +114,6 @@ function OuijAi({}: Props) {
         </form>
       </motion.div>
       <div className="px-6 text-center italic">{result}</div>
-      {/* <button className="bg-red-800 p-4 rounded-md"></button> */}
     </>
   )
 }
