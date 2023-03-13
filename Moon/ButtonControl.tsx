@@ -34,7 +34,7 @@ function ButtonControl({
       <button
         onClick={() => {
           moveTarget(controlRef, 0, 0, 0)
-          moveCamPosition({ cameraRef, x: 600, y: 666, z: 661, scale: 3 })
+          moveCamPosition({ cameraRef, x: 600, y: 666, z: 500, scale: 3 })
           // moveCamPosition({ cameraRef, x: 0, y: 0, z: 0, scale: 3 })
           setDisplayWindow('ouija')
           controlRef.current.autoRotate = true
