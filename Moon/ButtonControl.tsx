@@ -54,6 +54,7 @@ function ButtonControl({
           // controlRef.current.autoRotate = false
           moveCamPosition({ cameraRef, x: 20, y: 0, z: 2, scale: 3 })
           setDisplayWindow('arb')
+          cameraRef.current.autoRotate = false
         }}
       >
         Arbitrage
