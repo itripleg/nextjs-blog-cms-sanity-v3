@@ -84,7 +84,7 @@ export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
           <OrbitControls
             ref={controlRef}
             autoRotate={false}
-            autoRotateSpeed={0.1}
+            autoRotateSpeed={0.04}
             enablePan={false}
             enableRotate={false}
             enableZoom={false}
