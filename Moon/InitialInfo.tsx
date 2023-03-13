@@ -49,24 +49,25 @@ export default function InitialInfo({
           <p>
             Volume: ${data.market_data.total_volume.usd.toLocaleString('en-US')}
           </p>
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2 }}
-              className="flex gap-8 overflow-x-scroll text-center scrollbar overflow-y-hidden scrollbar-thumb-white"
-            >
-              {data?.tickers.map((ticker: any, i: number) => (
-                <div key={i} className="p-8">
-                  <h1>{ticker.market.name}</h1>
-                  <p>${ticker.last.toLocaleString('en-US')}</p>
-                  <p>
-                    Volume: {Math.floor(ticker.volume).toLocaleString('en-US')}
-                  </p>
-                </div>
-              ))}
-            </motion.div>
-          </>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2 }}
+            className="flex overflow-hidden overflow-x-scroll"
+            // className="flex flex-shrink-0 gap-8 overflow-hidden overflow-x-scroll text-center"
+            // style={{ scrollSnapType: 'x mandatory' }} // add this line
+          >
+            {data?.tickers.map((ticker: any, i: number) => (
+              <div key={i} className="flex-shrink-0 p-8">
+                <h1>{ticker.market.name}</h1>
+                <p>${ticker.last.toLocaleString('en-US')}</p>
+                <p>
+                  Volume: {Math.floor(ticker.volume).toLocaleString('en-US')}
+                </p>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </>

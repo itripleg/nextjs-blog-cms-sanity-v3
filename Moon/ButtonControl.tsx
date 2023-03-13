@@ -59,6 +59,19 @@ function ButtonControl({
       >
         Arbitrage
       </button>
+      <button
+        onClick={() => {
+          // defaultCam(controlRef, cameraRef)
+          moveTarget(controlRef, 200, 100, 0)
+          // controlRef.current.autoRotate = false
+          // moveCamPosition({ cameraRef, x: 0, y: 0, z: 0, scale: 1 })
+          moveCamPosition({ cameraRef, x: 211, y: 100, z: 100, scale: 0.5 })
+          setDisplayWindow('contract')
+          cameraRef.current.autoRotate = false
+        }}
+      >
+        Interface
+      </button>
       <button onClick={() => callback()}>
         {txtColor == '#fff' ? '🌞' : '🌚'}
       </button>

@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
+import { Web3Button, Web3Modal } from '@web3modal/react'
 import Chart from 'ChartWidget/Chart'
 import { motion, useAnimationControls } from 'framer-motion'
 import gsap from 'gsap'
@@ -14,6 +16,19 @@ import SpaceScene from 'Moon/SpaceScene'
 import OuijAi from 'ouija/OuijAi'
 import { useEffect, useRef, useState } from 'react'
 import useMeasure from 'react-use-measure'
+import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { arbitrum, mainnet, polygon, polygonMumbai } from 'wagmi/chains'
+
+const chains = [arbitrum, mainnet, polygon, polygonMumbai]
+const projectId = '53f8095fe255452059183eda8a5632bf'
+
+const { provider } = configureChains(chains, [w3mProvider({ projectId })])
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors: w3mConnectors({ projectId, version: 1, chains }),
+  provider,
+})
+const ethereumClient = new EthereumClient(wagmiClient, chains)
 
 import Mage from '../mages/old.Mage'
 
@@ -111,140 +126,162 @@ const Tradestation = () => {
   if (!DEBUG) {
     return (
       <>
-        <motion.div
-          animate={{ color: txtColor }}
-          transition={{ duration: 3 }}
-          className="mx-auto grid max-w-7xl grid-cols-1 gap-y-20"
-        >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{
-              opacity: 0.8,
-              color: txtColor,
-              backgroundColor: bgColor,
-            }}
-            transition={{ duration: 1, delay: 2 }}
-            className="fixed left-20 mt-20 hidden  flex-col items-center gap-2 rounded-md border bg-white/80 p-2 uppercase shadow 2xl:flex"
-          >
-            {/* <h1>👑</h1> */}
-            {Object.values(coinNameMap).map((coin, i) => {
-              return (
-                <p
-                  className="cursor-pointer"
-                  key={i}
-                  onClick={() => {
-                    newFetch(coin)
-                  }}
-                >
-                  {coin.coingecko}
-                </p>
-              )
-            })}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-          >
-            <Mage controls={mageControls} />
-          </motion.div>
-          <div className="absolute right-20 top-10 z-20 hidden lg:block">
-            <ButtonControl
-              setDisplayWindow={setDisplayWindow}
-              txtColor={txtColor}
-              controlRef={controlRef}
-              cameraRef={cameraRef}
-              callback={dayNight}
-            />
-          </div>
-
-          {/* If theres data loaded: */}
-          {data ? (
-            displayWindow === 'home' ? (
-              <>
-                {/* Main window */}
-                <div className="">
-                  <div className="overflow-hidden" ref={initialPage}>
-                    <PriceHeader data={data} bgColor={bgColor} />
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 1 }}
-                      className="h-4/5 bg-white/30 p-6"
-                      ref={chartContainer}
-                    >
-                      <Chart
-                        data={tradeData}
-                        width={Math.floor(bounds.width)}
-                        // height={Math.floor(bounds.height / 0.9)}
-                        height={Math.floor(bounds.height / 1.08)}
-                      />
-                    </motion.div>
-                  </div>
-                  <div className="grid grid-cols-2 border">
-                    <div className="col-span-2">
-                      <InitialInfo
-                        data={data}
-                        tradeData={tradeData}
-                        coinId={coinId}
-                        pair={pair}
-                        txtColor={txtColor}
-                        bgColor={bgColor}
-                      />
-                    </div>
-                  </div>{' '}
-                </div>
-              </>
-            ) : displayWindow === 'arb' ? (
-              <div className="w-[1400px] p-2">
-                <Arbiter />
-              </div>
-            ) : displayWindow === 'ouija' ? (
+        <WagmiConfig client={wagmiClient}>
+          <>
+            <motion.div
+              animate={{ color: txtColor }}
+              transition={{ duration: 3 }}
+              className="mx-auto grid max-w-7xl grid-cols-1 gap-y-20"
+            >
               <motion.div
-                className="h-[400px] overflow-hidden "
-                animate={{ opacity: 1, color: txtColor }}
-                transition={{ delay: 2, duration: 3 }}
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 0.8,
+                  color: txtColor,
+                  backgroundColor: bgColor,
+                }}
+                transition={{ duration: 1, delay: 2 }}
+                className="fixed left-20 mt-20 hidden  flex-col items-center gap-2 rounded-md border bg-white/80 p-2 uppercase shadow 2xl:flex"
               >
-                <OuijAi />
+                {/* <h1>👑</h1> */}
+                {Object.values(coinNameMap).map((coin, i) => {
+                  return (
+                    <p
+                      className="cursor-pointer"
+                      key={i}
+                      onClick={() => {
+                        newFetch(coin)
+                      }}
+                    >
+                      {coin.coingecko}
+                    </p>
+                  )
+                })}
               </motion.div>
-            ) : displayWindow === 'moon' ? (
-              <div className="bg-purple-800 p-20">
-                <MoonPhase />
-                <Retrograde />
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+              >
+                <Mage controls={mageControls} />
+              </motion.div>
+              <div className="absolute right-20 top-10 z-20 hidden lg:block">
+                <ButtonControl
+                  setDisplayWindow={setDisplayWindow}
+                  txtColor={txtColor}
+                  controlRef={controlRef}
+                  cameraRef={cameraRef}
+                  callback={dayNight}
+                />
               </div>
-            ) : (
-              <div></div>
-            )
-          ) : (
-            <MoonLoading />
-          )}
 
-          {/* otherwise we're loading or an error */}
-        </motion.div>
+              {/* If theres data loaded: */}
+              {data ? (
+                displayWindow === 'home' ? (
+                  <>
+                    {/* Main window */}
+                    <div className="">
+                      <div className="overflow-hidden" ref={initialPage}>
+                        <PriceHeader data={data} bgColor={bgColor} />
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 1 }}
+                          className="h-4/5 bg-white/30 p-6"
+                          ref={chartContainer}
+                        >
+                          <Chart
+                            data={tradeData}
+                            width={Math.floor(bounds.width)}
+                            // height={Math.floor(bounds.height / 0.9)}
+                            height={Math.floor(bounds.height / 1.08)}
+                          />
+                        </motion.div>
+                      </div>
+                      <div className="grid grid-cols-2 border">
+                        <div className="col-span-2">
+                          <InitialInfo
+                            data={data}
+                            tradeData={tradeData}
+                            coinId={coinId}
+                            pair={pair}
+                            txtColor={txtColor}
+                            bgColor={bgColor}
+                          />
+                        </div>
+                      </div>{' '}
+                    </div>
+                  </>
+                ) : displayWindow === 'arb' ? (
+                  <div className="w-[1400px] p-2">
+                    <Arbiter />
+                  </div>
+                ) : displayWindow === 'ouija' ? (
+                  <motion.div
+                    className="h-[400px] overflow-hidden "
+                    animate={{ opacity: 1, color: txtColor }}
+                    transition={{ delay: 2, duration: 3 }}
+                  >
+                    <OuijAi />
+                  </motion.div>
+                ) : displayWindow === 'contract' ? (
+                  <motion.div
+                    className="h-[400px] overflow-hidden "
+                    animate={{ opacity: 1, color: txtColor }}
+                    transition={{ delay: 2, duration: 3 }}
+                  >
+                    <h1>Interface</h1>
+                    <p>some user selectable inputs and details here like:</p>
+                    <p>Target network</p>
+                    <p>Target Dex</p>
+                    <p>Target coin</p>
+                    <p>Price difference %</p>
+                    <p>Amount to trade</p>
+                    <p>Flash loan provider address</p>
+                    <div className="p-12" />
+                    <Web3Button />
+                  </motion.div>
+                ) : displayWindow === 'moon' ? (
+                  <div className="bg-purple-800 p-20">
+                    <MoonPhase />
+                    <Retrograde />
+                  </div>
+                ) : (
+                  <div></div>
+                )
+              ) : (
+                <MoonLoading />
+              )}
 
-        {/* Space scene container */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, backgroundColor: bgColor }}
-          transition={{ duration: 2, delay: 3 }}
-          className="absolute top-0 left-0 -z-40 h-[1400px] w-full "
-        >
-          <SpaceScene
-            cameraRef={cameraRef}
-            controlRef={controlRef}
-            lightRef={lightRef}
-          />
-        </motion.div>
-        <div className="fixed bottom-0 col-span-full text-center lg:hidden">
-          <ButtonControl
-            setDisplayWindow={setDisplayWindow}
-            txtColor={txtColor}
-            controlRef={controlRef}
-            cameraRef={cameraRef}
-            callback={dayNight}
-          />
-        </div>
+              {/* otherwise we're loading or an error */}
+            </motion.div>
+
+            {/* Space scene container */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, backgroundColor: bgColor }}
+              transition={{ duration: 2, delay: 3 }}
+              className="absolute top-0 left-0 -z-40 h-[1400px] w-full "
+            >
+              <SpaceScene
+                cameraRef={cameraRef}
+                controlRef={controlRef}
+                lightRef={lightRef}
+              />
+            </motion.div>
+            <div className="fixed bottom-0 col-span-full text-center lg:hidden">
+              <ButtonControl
+                setDisplayWindow={setDisplayWindow}
+                txtColor={txtColor}
+                controlRef={controlRef}
+                cameraRef={cameraRef}
+                callback={dayNight}
+              />
+            </div>
+          </>
+          <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+        </WagmiConfig>
       </>
     )
   } else {
