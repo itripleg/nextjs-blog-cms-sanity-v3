@@ -128,7 +128,7 @@ function ArbitrageCalculator(txtColor: any, bgColor: any) {
           <p className="px-2 text-center">
             Price on Dex A:
             <motion.input
-              className="text-center"
+              className="rounded-md text-center"
               animate={{ color: 'black', backgroundColor: bgColor }}
               type="number"
               defaultValue={price1}
@@ -141,7 +141,7 @@ function ArbitrageCalculator(txtColor: any, bgColor: any) {
           <p className="px-2 text-center">
             Price on Dex B:
             <motion.input
-              className="text-center"
+              className="rounded-md text-center"
               animate={{ color: 'black', backgroundColor: bgColor }}
               type="number"
               value={price2}
@@ -154,7 +154,7 @@ function ArbitrageCalculator(txtColor: any, bgColor: any) {
           <p className="px-2 text-center">
             Token amount:{' '}
             <motion.input
-              className="text-center"
+              className=" rounded-md text-center"
               animate={{ color: 'black' }}
               type="number"
               value={tokenAmount}
