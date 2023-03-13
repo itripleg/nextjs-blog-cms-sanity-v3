@@ -41,13 +41,20 @@ function Arbiter({}: Props) {
   }, [])
 
   return (
-    <div className="w-[500px] border">
+    <div className="h-full w-[500px] border">
       <motion.div
         animate={{ backgroundColor: '#000', opacity: 0.7 }}
         // animate={{ backgroundColor: '#886CE4', opacity: 0.7 }}
-        className="grid  grid-cols-2 gap-4 overflow-scroll rounded-md p-4 text-center text-white"
+        className="grid grid-cols-2 gap-4 overflow-y-scroll rounded-md p-4 text-center text-white scrollbar"
       >
-        <h1 className="col-span-2 text-center">Arbitrary Arbitrage</h1>
+        <h1 className="col-span-2 text-center opacity-20">
+          Arbitrary Arbitrage
+        </h1>
+
+        <p className="border p-2 text-center text-xs">
+          Currently focused on the Polygon network but a lot more coming. Still
+          need to get current prices across all dexes.
+        </p>
 
         <div className="col-span-2 hidden">
           <h1 className="">Networks</h1>
