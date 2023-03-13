@@ -2,11 +2,18 @@ import { data } from '@tensorflow/tfjs'
 import { motion } from 'framer-motion'
 import React from 'react'
 
-type Props = { data }
+type Props = { data; bgColor }
 
-function PriceHeader({ data }: Props) {
+function PriceHeader({ data, bgColor }: Props) {
+  // returns just the first sentence of the coin description
+  // can be buggy if the first sentence has a e.g. URL
+  function getFirstSentence(paragraph: string) {
+    const firstSentence = paragraph.match(/^[^\.\?!]*/)[0]
+    return firstSentence + '.'
+  }
+  const firstSentence = data ? getFirstSentence(data?.description.en) : null
   return (
-    <div className="overflow-hidden p-4 text-center text-6xl">
+    <div className="overflow-hidden text-center text-6xl">
       <div className="flex items-center justify-center gap-4 text-center">
         <motion.div
           initial={{ opacity: 0 }}
@@ -32,6 +39,16 @@ function PriceHeader({ data }: Props) {
             alt="logo"
           />
         </motion.div>
+      </div>
+      <div className="">
+        <motion.p
+          initial={{ opacity: 0, backgroundColor: '#fff' }}
+          animate={{ opacity: 0.7, backgroundColor: bgColor }}
+          transition={{ delay: 2, duration: 3 }}
+          className="p-8 text-center text-sm shadow"
+        >
+          {firstSentence}
+        </motion.p>
       </div>
     </div>
   )
