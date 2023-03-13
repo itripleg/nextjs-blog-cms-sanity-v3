@@ -58,7 +58,7 @@ function OuijAi({}: Props) {
         initial={{ opacity: 0, scale: 1 }}
         animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
         transition={{ delay: 1, duration: 1 }}
-        className="mx-auto flex h-[300px] max-w-4xl justify-center lg:h-[1000px]"
+        className="mx-auto flex h-[400px] max-w-4xl justify-center lg:h-[1000px]"
       >
         <Canvas camera={{ zoom: 1, position: [0, 0, 6] }}>
           <PresentationControls
@@ -90,17 +90,19 @@ function OuijAi({}: Props) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
+        className="absolute left-0 mx-auto flex w-full max-w-[200px]  flex-col justify-center"
       >
         <h1 className="text-center text-2xl uppercase tracking-[20px] ">
           <span className="text-red-800">Ask </span>
           Away
         </h1>
         <form onSubmit={onSubmit}>
-          <div className="flex w-full justify-center px-6 py-6 lg:px-0">
-            <input
+          <div className="flex w-full justify-center bg-black/20 px-6 py-6 lg:px-0">
+            <motion.input
+              animate={{ opacity: 0.8 }}
               type="text"
               value={questionInput}
-              className="w-full max-w-4xl rounded-md border p-2 text-black"
+              className="w-full max-w-4xl rounded-md border bg-black/20 p-2 text-black"
               onChange={(e) => {
                 setQuestionInput(e.target.value)
                 handleKeyPress(e.target.value.toLowerCase())
@@ -108,8 +110,8 @@ function OuijAi({}: Props) {
             />
           </div>
         </form>
+        <div className="p-8 text-center italic">{result}</div>
       </motion.div>
-      <div className="px-6 text-center italic">{result}</div>
     </>
   )
 }
