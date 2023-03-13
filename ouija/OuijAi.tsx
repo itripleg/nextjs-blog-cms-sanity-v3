@@ -1,8 +1,4 @@
-import {
-  Environment,
-  PerspectiveCamera,
-  PresentationControls,
-} from '@react-three/drei'
+import { Environment, PresentationControls } from '@react-three/drei'
 import { Canvas, useThree } from '@react-three/fiber'
 import { motion, useAnimation } from 'framer-motion'
 import React, { useState } from 'react'

@@ -1,10 +1,6 @@
-import Chart from 'ChartWidget/Chart'
 import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 import useMeasure from 'react-use-measure'
-
-import MoonPhase from './MoonPhase'
-import Retrograde from './Retrograde'
 
 type Props = {
   data
@@ -58,7 +54,7 @@ export default function InitialInfo({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 2 }}
-              className="flex gap-8 overflow-x-scroll text-center scrollbar overflow-y-hidden scrollbar-track-blue-800 scrollbar-thumb-white/60"
+              className="flex gap-8 overflow-x-scroll text-center scrollbar overflow-y-hidden scrollbar-thumb-white"
             >
               {data?.tickers.map((ticker: any, i: number) => (
                 <div key={i} className="p-8">

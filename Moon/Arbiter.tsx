@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 
-import InitialInfo from './InitialInfo'
 import MoonPhase from './MoonPhase'
 import Retrograde from './Retrograde'
 

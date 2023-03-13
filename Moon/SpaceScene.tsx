@@ -8,15 +8,9 @@ import { Canvas } from '@react-three/fiber'
 import { animationControls, useAnimation } from 'framer-motion'
 import gsap from 'gsap'
 import Moon from 'myModels/Moon'
-import Sundial from 'myModels/Sundial'
-import { Flecha } from 'ouija/Flecha'
-import { OuijaBoard } from 'ouija/OuijaBoard'
 // import OuijaBoard from 'ouija/OuijaBoard'
 import { Suspense } from 'react'
 import { useRef } from 'react'
-import * as cam from 'utils/CamTools'
-
-import Book from './Book'
 
 // import Sundial from '../myModels/Sundial'
 
