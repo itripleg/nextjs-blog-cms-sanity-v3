@@ -5,12 +5,13 @@ import {
   Stars,
 } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
+import { animationControls, useAnimation } from 'framer-motion'
 import gsap from 'gsap'
 import Moon from 'myModels/Moon'
 import Sundial from 'myModels/Sundial'
 import { Flecha } from 'ouija/Flecha'
 import { OuijaBoard } from 'ouija/OuijaBoard'
-import OuijAi from 'ouija/OuijAi'
+// import OuijaBoard from 'ouija/OuijaBoard'
 import { Suspense } from 'react'
 import { useRef } from 'react'
 import * as cam from 'utils/CamTools'
@@ -22,7 +23,11 @@ import Book from './Book'
 type Props = { cameraRef: any; controlRef: any; lightRef: any }
 
 export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
-  const positions = { home: [0, 0, 0], sundial: [600, 610, 600] }
+  const positions = {
+    home: [0, 0, 0],
+    sundial: [600, 610, 600],
+    ouija: [200, 200, 200],
+  }
 
   function getMoonPosition(position) {
     // console.log('object position:', position)
@@ -30,29 +35,32 @@ export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
   }
 
   const spotRef = useRef(null)
-  function pointSpotlight() {
+  function pointSpotlight(position) {
     console.log(spotRef.current)
     gsap.to(spotRef.current.target.position, {
-      x: positions.sundial[0],
-      y: positions.sundial[1],
-      z: positions.sundial[2],
-      duration: 3,
+      x: position[0],
+      y: position[1],
+      z: position[2],
+      duration: 2,
     })
   }
-
+  const animationControls = useAnimation()
   return (
     <>
       <Suspense>
         <Canvas className="">
-          <OuijaBoard position={[-600, -600 - 600 - 600]} />
-          {/* <OuijaBoard /> */}
-          {/* <Flecha /> */}
+          {/* <Flecha
+            animationControls={animationControls}
+            position={positions.ouija}
+          />
+          <OuijaBoard position={positions.ouija} /> */}
+
           {/* <Book /> */}
-          <Sundial
+          {/* <Sundial
             scale={2.5}
             position={positions.sundial}
-            onClick={() => pointSpotlight()}
-          />
+            onClick={() => pointSpotlight(positions.sundial)}
+          /> */}
           {/* @ts-ignore */}
           <SpotLight
             ref={spotRef}
@@ -82,7 +90,10 @@ export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
           <OrbitControls
             ref={controlRef}
             autoRotate={false}
-            autoRotateSpeed={0.1}
+            autoRotateSpeed={0.03}
+            enablePan={false}
+            enableRotate={false}
+            enableZoom={false}
           />
           {/* @ts-ignore */}
           <PerspectiveCamera
