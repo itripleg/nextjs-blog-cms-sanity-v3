@@ -118,7 +118,7 @@ const Tradestation = () => {
         <motion.div
           animate={{ color: txtColor }}
           transition={{ duration: 3 }}
-          className="mx-auto grid h-full max-w-7xl grid-cols-1 gap-y-20 overflow-hidden"
+          className="mx-auto grid h-full max-w-7xl grid-cols-1 gap-y-20"
         >
           <motion.div
             initial={{ opacity: 0 }}
