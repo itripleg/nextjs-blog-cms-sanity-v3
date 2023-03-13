@@ -104,9 +104,6 @@ const Tradestation = () => {
     })
   }
   const initialPage = useRef(null)
-  function doSomething() {
-    gsap.to(initialPage, { opacity: 0 })
-  }
 
   const [displayWindow, setDisplayWindow] = useState('home')
 
@@ -117,7 +114,7 @@ const Tradestation = () => {
         <motion.div
           animate={{ color: txtColor }}
           transition={{ duration: 3 }}
-          className="mx-auto grid h-full max-w-7xl grid-cols-1 gap-y-20"
+          className="mx-auto grid max-w-7xl grid-cols-1 gap-y-20"
         >
           <motion.div
             initial={{ opacity: 0 }}
@@ -200,7 +197,7 @@ const Tradestation = () => {
                 </div>
               </>
             ) : displayWindow === 'arb' ? (
-              <div className="p-2">
+              <div className="w-[1400px] p-2">
                 <Arbiter />
               </div>
             ) : displayWindow === 'ouija' ? (
@@ -231,7 +228,7 @@ const Tradestation = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, backgroundColor: bgColor }}
           transition={{ duration: 2, delay: 3 }}
-          className="absolute top-0 left-0 -z-40  h-[1500px] w-full overflow-hidden "
+          className="absolute top-0 left-0 -z-40 h-[1400px] w-full "
         >
           <SpaceScene
             cameraRef={cameraRef}
