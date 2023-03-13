@@ -13,12 +13,12 @@ function PriceHeader({ data, bgColor }: Props) {
   }
   const firstSentence = data ? getFirstSentence(data?.description.en) : null
   return (
-    <div className="overflow-hidden text-center text-6xl">
-      <div className="flex items-center justify-center gap-4 text-center">
+    <div className=" p-8 text-center text-6xl">
+      <div className="flex items-center justify-center gap-4 p-6 text-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 3, duration: 1 }}
+          transition={{ delay: 3.2, duration: 1 }}
         >
           ${data?.market_data.current_price.usd.toLocaleString('en-US')}
         </motion.div>
@@ -26,6 +26,7 @@ function PriceHeader({ data, bgColor }: Props) {
           initial={{ x: -80, scale: 1.5, type: 'spring' }}
           animate={{ x: 0, scale: 1, type: 'spring' }}
           transition={{ delay: 3, bounce: 1, duration: 1 }}
+          className="h-12"
         >
           <motion.img
             animate={{ opacity: 1, scale: 1.2 }}
@@ -44,7 +45,7 @@ function PriceHeader({ data, bgColor }: Props) {
         <motion.p
           initial={{ opacity: 0, backgroundColor: '#fff' }}
           animate={{ opacity: 0.7, backgroundColor: bgColor }}
-          transition={{ delay: 2, duration: 3 }}
+          transition={{ delay: 2, duration: 2 }}
           className="p-8 text-center text-sm shadow"
         >
           {firstSentence}
