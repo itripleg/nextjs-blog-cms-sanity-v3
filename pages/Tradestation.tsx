@@ -135,32 +135,6 @@ const Tradestation = () => {
             >
               <motion.div
                 initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 0.8,
-                  color: txtColor,
-                  backgroundColor: bgColor,
-                }}
-                transition={{ duration: 1, delay: 2 }}
-                className="fixed left-20 mt-20 hidden  flex-col items-center gap-2 rounded-md border bg-white/80 p-2 uppercase shadow 2xl:flex"
-              >
-                {/* <h1>👑</h1> */}
-                {Object.values(coinNameMap).map((coin, i) => {
-                  return (
-                    <p
-                      className="cursor-pointer"
-                      key={i}
-                      onClick={() => {
-                        newFetch(coin)
-                      }}
-                    >
-                      {coin.coingecko}
-                    </p>
-                  )
-                })}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1 }}
               >
@@ -180,6 +154,31 @@ const Tradestation = () => {
               {data ? (
                 displayWindow === 'home' ? (
                   <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        opacity: 0.8,
+                        color: txtColor,
+                        backgroundColor: bgColor,
+                      }}
+                      transition={{ duration: 1, delay: 2 }}
+                      className="fixed left-20 mt-20 hidden  flex-col items-center gap-2 rounded-md border bg-white/80 p-2 uppercase shadow 2xl:flex"
+                    >
+                      {/* <h1>👑</h1> */}
+                      {Object.values(coinNameMap).map((coin, i) => {
+                        return (
+                          <p
+                            className="cursor-pointer"
+                            key={i}
+                            onClick={() => {
+                              newFetch(coin)
+                            }}
+                          >
+                            {coin.coingecko}
+                          </p>
+                        )
+                      })}
+                    </motion.div>
                     {/* Main window */}
                     <div className="">
                       <div className="overflow-hidden" ref={initialPage}>
@@ -194,8 +193,7 @@ const Tradestation = () => {
                           <Chart
                             data={tradeData}
                             width={Math.floor(bounds.width)}
-                            // height={Math.floor(bounds.height / 0.9)}
-                            height={Math.floor(bounds.height / 1.08)}
+                            height={Math.floor(bounds.height / 1.06)}
                           />
                         </motion.div>
                       </div>
