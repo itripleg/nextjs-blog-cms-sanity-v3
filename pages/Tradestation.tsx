@@ -118,7 +118,7 @@ const Tradestation = () => {
         <motion.div
           animate={{ color: txtColor }}
           transition={{ duration: 3 }}
-          className="mx-auto grid max-w-7xl  flex-shrink grid-cols-1 gap-y-20 overflow-hidden scrollbar-thin scrollbar-track-blue-800"
+          className="mx-auto grid h-full max-w-7xl grid-cols-1 gap-y-20 overflow-hidden"
         >
           <motion.div
             initial={{ opacity: 0 }}
@@ -128,12 +128,13 @@ const Tradestation = () => {
               backgroundColor: bgColor,
             }}
             transition={{ duration: 1, delay: 2 }}
-            className="fixed left-20 mt-20 hidden flex-col items-center gap-2 border bg-white/80 p-2 uppercase shadow 2xl:flex"
+            className="fixed left-20 mt-20 hidden  flex-col items-center gap-2 rounded-md border bg-white/80 p-2 uppercase shadow 2xl:flex"
           >
-            <h1>👑</h1>
+            {/* <h1>👑</h1> */}
             {Object.values(coinNameMap).map((coin, i) => {
               return (
                 <p
+                  className="cursor-pointer"
                   key={i}
                   onClick={() => {
                     newFetch(coin)
