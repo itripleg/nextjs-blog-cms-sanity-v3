@@ -42,7 +42,7 @@ function Arbiter({}: Props) {
   }, [])
 
   return (
-    <div className="h-full w-[500px] border">
+    <div className="max-h-screen w-[800px] ">
       <motion.div
         animate={{ backgroundColor: '#000', opacity: 0.7 }}
         // animate={{ backgroundColor: '#886CE4', opacity: 0.7 }}
@@ -52,10 +52,10 @@ function Arbiter({}: Props) {
           Arbitrary Arbitrage
         </h1>
 
-        <p className="flex content-center justify-center border p-2 text-center text-xs">
+        <p className="flex items-center justify-center p-2 text-center text-xs">
           Currently focused on the Polygon network but a lot more coming. Still
-          need to get current prices across all dexes. Planning on using AI to
-          spot discrepancies.
+          need to get current prices across all dexes. Planning to create a
+          smart contract interface here as well.
         </p>
         <div className="grid grid-cols-2 place-items-center bg-blue-800/20 py-4 text-center">
           <MoonPhase />
@@ -63,7 +63,7 @@ function Arbiter({}: Props) {
         </div>
         <div className="col-span-2 hidden">
           <h1 className="">Networks</h1>
-          {networks.slice(0, 20).map((network) => (
+          {networks.slice(0, 100).map((network) => (
             <>
               <div key={network.id}>
                 {network.attributes.name + ' - ' + network.id}
@@ -71,17 +71,39 @@ function Arbiter({}: Props) {
             </>
           ))}
         </div>
-        <div className="col-span-2">
-          <h1 className="opacity-0">Polygon Dexes</h1>
-          {dexes.slice(0, 20).map((dex) => (
-            <div key={dex.id}>{dex.attributes.name + ' - ' + dex.id}</div>
-          ))}
-        </div>
-        <div className="col-span-2">
-          <h1 className="opacity-0">Polygon Pools</h1>
-          {pools.slice(0, 20).map((pool) => (
-            <div key={pool.id}>{pool.attributes.name + ' - ' + pool.id}</div>
-          ))}
+        <div className="mx-auto flex content-center items-center justify-center">
+          <div className="col-span-3 flex border p-4">
+            <div className="p-4">
+              <h1 className="col-span-2">Polygon Dexes</h1>
+              {dexes.slice(0, 15).map((dex) => (
+                <div key={dex.id}>{dex.attributes.name + ' - ' + dex.id}</div>
+              ))}
+            </div>
+            <div className="col-span-2">
+              {dexes.slice(15, 30).map((dex) => (
+                <div key={dex.id}>{dex.attributes.name + ' - ' + dex.id}</div>
+              ))}
+            </div>
+          </div>
+          <div className="col-span-2 ">
+            <h1 className="opacity-0">Polygon Pools</h1>
+            <div className="flex">
+              <div className="p-4">
+                {pools.slice(0, 10).map((pool) => (
+                  <div key={pool.id}>
+                    {pool.attributes.name + ' - ' + pool.id}
+                  </div>
+                ))}
+              </div>
+              <div>
+                {pools.slice(10, 20).map((pool) => (
+                  <div key={pool.id}>
+                    {pool.attributes.name + ' - ' + pool.id}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </motion.div>
     </div>
