@@ -2,6 +2,8 @@ import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 
 import InitialInfo from './InitialInfo'
+import MoonPhase from './MoonPhase'
+import Retrograde from './Retrograde'
 
 type Props = {}
 function Arbiter({}: Props) {
@@ -51,11 +53,15 @@ function Arbiter({}: Props) {
           Arbitrary Arbitrage
         </h1>
 
-        <p className="border p-2 text-center text-xs">
+        <p className="flex content-center justify-center border p-2 text-center text-xs">
           Currently focused on the Polygon network but a lot more coming. Still
-          need to get current prices across all dexes.
+          need to get current prices across all dexes. Planning on using AI to
+          spot discrepancies.
         </p>
-
+        <div className="grid grid-cols-2 place-items-center bg-blue-800/20 py-4 text-center">
+          <MoonPhase />
+          <Retrograde />
+        </div>
         <div className="col-span-2 hidden">
           <h1 className="">Networks</h1>
           {networks.slice(0, 20).map((network) => (
