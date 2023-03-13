@@ -83,7 +83,8 @@ function OuijAi({}: Props) {
             <OuijaBoard />
           </PresentationControls>
 
-          <Environment preset="sunset" />
+          {/* <Environment preset="sunset" /> */}
+          <ambientLight intensity={0.5} />
         </Canvas>
       </motion.div>
       <motion.div
