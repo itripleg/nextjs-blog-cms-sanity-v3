@@ -3,7 +3,7 @@
 import Chart from 'ChartWidget/Chart'
 import { motion, useAnimationControls } from 'framer-motion'
 import gsap from 'gsap'
-import Arb from 'Moon/Arb'
+import Arbiter from 'Moon/Arbiter'
 import ButtonControl from 'Moon/ButtonControl'
 import InitialInfo from 'Moon/InitialInfo'
 import MoonLoading from 'Moon/MoonLoading'
@@ -11,6 +11,8 @@ import MoonPhase from 'Moon/MoonPhase'
 import PriceHeader from 'Moon/PriceHeader'
 import Retrograde from 'Moon/Retrograde'
 import SpaceScene from 'Moon/SpaceScene'
+import { OuijaBoard } from 'ouija/OuijaBoard'
+import OuijAi from 'ouija/OuijAi'
 import { useEffect, useRef, useState } from 'react'
 import useMeasure from 'react-use-measure'
 
@@ -39,11 +41,10 @@ const Tradestation = () => {
   const [page, setPage] = useState('initial')
 
   const times = { day: '#fff', night: '#000' }
-  const [time, setTime] = useState('#fff')
-  const [bgColor, setBgColor] = useState('#fff')
-  const [txtColor, setTxtColor] = useState('#000')
-
-  const firstSentence = data ? getFirstSentence(data?.description.en) : null
+  const [time, setTime] = useState(null)
+  const [bgColor, setBgColor] = useState('#000')
+  const [txtColor, setTxtColor] = useState('#fff')
+  const [autoRotate, setAutoRotate] = useState(false)
 
   const mageControls = useAnimationControls()
 
@@ -90,13 +91,6 @@ const Tradestation = () => {
     setNewCoinId(coin.coingecko)
     setPair(coin.pair)
     await fetchBinanceData(coin.pair)
-  }
-
-  // returns just the first sentence of the coin description
-  // can be buggy if the first sentence has a e.g. URL
-  function getFirstSentence(paragraph: string) {
-    const firstSentence = paragraph.match(/^[^\.\?!]*/)[0]
-    return firstSentence + '.'
   }
 
   const dayNight = () => {
@@ -158,7 +152,7 @@ const Tradestation = () => {
           >
             <Mage controls={mageControls} />
           </motion.div>
-          <div className="absolute right-20 top-10 z-20">
+          <div className="absolute right-20 top-10 z-20 hidden lg:block">
             <ButtonControl
               setDisplayWindow={setDisplayWindow}
               txtColor={txtColor}
@@ -167,6 +161,7 @@ const Tradestation = () => {
               callback={dayNight}
             />
           </div>
+
           {/* If theres data loaded: */}
           {data ? (
             displayWindow === 'home' ? (
@@ -174,7 +169,7 @@ const Tradestation = () => {
                 {/* Main window */}
                 <div className="">
                   <div className="overflow-hidden" ref={initialPage}>
-                    <PriceHeader data={data} />
+                    <PriceHeader data={data} bgColor={bgColor} />
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -197,18 +192,25 @@ const Tradestation = () => {
                         tradeData={tradeData}
                         coinId={coinId}
                         pair={pair}
-                        firstSentence={firstSentence}
                         txtColor={txtColor}
                         bgColor={bgColor}
                       />
                     </div>
-                  </div>
+                  </div>{' '}
                 </div>
               </>
             ) : displayWindow === 'arb' ? (
               <div className="p-2">
-                <Arb />
+                <Arbiter />
               </div>
+            ) : displayWindow === 'ouija' ? (
+              <motion.div
+                className="h-[400px] overflow-hidden "
+                animate={{ opacity: 1, color: txtColor }}
+                transition={{ delay: 2, duration: 3 }}
+              >
+                <OuijAi />
+              </motion.div>
             ) : displayWindow === 'moon' ? (
               <div className="bg-purple-800 p-20">
                 <MoonPhase />
@@ -237,6 +239,15 @@ const Tradestation = () => {
             lightRef={lightRef}
           />
         </motion.div>
+        <div className="fixed bottom-0 col-span-full text-center lg:hidden">
+          <ButtonControl
+            setDisplayWindow={setDisplayWindow}
+            txtColor={txtColor}
+            controlRef={controlRef}
+            cameraRef={cameraRef}
+            callback={dayNight}
+          />
+        </div>
       </>
     )
   } else {
