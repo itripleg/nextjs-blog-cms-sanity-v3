@@ -40,7 +40,7 @@ function Chart({ data, width, height }: Props) {
 
   return (
     <>
-      <svg className="bg-gray-100" viewBox={`0 0 ${width} ${height}`}>
+      <svg className="bg-black/20" viewBox={`0 0 ${width} ${height}`}>
         <motion.path
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}

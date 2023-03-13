@@ -5,9 +5,9 @@ import { Web3Button, Web3Modal } from '@web3modal/react'
 import Chart from 'ChartWidget/Chart'
 import { motion, useAnimationControls } from 'framer-motion'
 import gsap from 'gsap'
-import Arbiter from 'Moon/Arbiter'
 import ButtonControl from 'Moon/ButtonControl'
 import InitialInfo from 'Moon/InitialInfo'
+import Interface from 'Moon/Interface'
 import MoonLoading from 'Moon/MoonLoading'
 import MoonPhase from 'Moon/MoonPhase'
 import PriceHeader from 'Moon/PriceHeader'
@@ -188,7 +188,7 @@ const Tradestation = () => {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ duration: 1 }}
-                          className="h-4/5 bg-white/30 p-6"
+                          className="h-4/5 bg-black/30 p-6"
                           ref={chartContainer}
                         >
                           <Chart
@@ -199,8 +199,8 @@ const Tradestation = () => {
                           />
                         </motion.div>
                       </div>
-                      <div className="grid grid-cols-2 border">
-                        <div className="col-span-2">
+                      <div className="grid grid-cols-2 scrollbar">
+                        <div className="col-span-2 scrollbar">
                           <InitialInfo
                             data={data}
                             tradeData={tradeData}
@@ -213,11 +213,9 @@ const Tradestation = () => {
                       </div>{' '}
                     </div>
                   </>
-                ) : displayWindow === 'arb' ? (
-                  <div className="w-[1400px] p-2">
-                    <Arbiter />
-                  </div>
-                ) : displayWindow === 'ouija' ? (
+                ) : // ) : displayWindow === 'arb' ? (
+                //   <div className="w-[1400px] p-2">{/* <Arbiter /> */}</div>
+                displayWindow === 'ouija' ? (
                   <motion.div
                     className="h-[400px] overflow-hidden "
                     animate={{ opacity: 1, color: txtColor }}
@@ -225,21 +223,44 @@ const Tradestation = () => {
                   >
                     <OuijAi />
                   </motion.div>
-                ) : displayWindow === 'contract' ? (
+                ) : displayWindow === 'arb' ? (
                   <motion.div
-                    className="h-[400px] overflow-hidden "
-                    animate={{ opacity: 1, color: txtColor }}
+                    className="bg-black/50 p-6"
+                    animate={{
+                      opacity: 1,
+                      color: txtColor,
+                      // backgroundColor: bgColor,
+                    }}
                     transition={{ delay: 2, duration: 3 }}
                   >
-                    <h1>Interface</h1>
-                    <p>some user selectable inputs and details here like:</p>
-                    <p>Target network</p>
-                    <p>Target Dex</p>
-                    <p>Target coin</p>
-                    <p>Price difference %</p>
-                    <p>Amount to trade</p>
-                    <p>Flash loan provider address</p>
-                    <div className="p-12" />
+                    <div className="pb-20">
+                      <h1>Interface</h1>
+                      <p>some user selectable inputs and details here like:</p>
+                      <p>
+                        Target network - arbitrage contract will need to be
+                        deployed to each network we want to work with.
+                      </p>
+                      <p>Target decentralized exchange</p>
+                      <p>
+                        Target coin, this is the one we will need to flash loan.
+                      </p>
+                      <p>
+                        Price difference %. The higher percent the better
+                        opportunity.
+                      </p>
+                      <p>Amount of coin to trade</p>
+                      <p>Flash loan provider address</p>
+                      <br />
+                      <p>
+                        I also plan to store results in a database and show them
+                        one this page. Hopefully we can feed the results into a
+                        machine learning process to figure out what kind of
+                        trade setups are most successful.
+                      </p>
+                    </div>
+                    <div className="">
+                      <Interface txtColor={txtColor} bgColor={bgColor} />
+                    </div>
                     <Web3Button />
                   </motion.div>
                 ) : displayWindow === 'moon' ? (

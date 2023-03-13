@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 
+import Interface from './Interface'
 import MoonPhase from './MoonPhase'
 import Retrograde from './Retrograde'
 
@@ -9,6 +10,8 @@ function Arbiter({}: Props) {
   const [networks, setNetworks] = useState([])
   const [dexes, setDexes] = useState([])
   const [pools, setPools] = useState([])
+  const [targetNetwork, setTargetNetwork] = useState(null)
+  const [targetDex, setTargetDex] = useState(null)
 
   const getNetworks = async () => {
     const res = await fetch('https://api.geckoterminal.com/api/v2/networks/')
@@ -36,9 +39,9 @@ function Arbiter({}: Props) {
   }
 
   useEffect(() => {
-    getNetworks()
-    getDexes()
-    getPools()
+    // getNetworks()
+    // getDexes()
+    // getPools()
   }, [])
 
   return (
@@ -58,19 +61,21 @@ function Arbiter({}: Props) {
           smart contract interface here as well.
         </p>
         <div className="grid grid-cols-2 place-items-center bg-blue-800/20 py-4 text-center">
-          <MoonPhase />
-          <Retrograde />
+          {/* <MoonPhase />
+          <Retrograde /> */}
+          <Interface />
         </div>
-        <div className="col-span-2 hidden">
+        <div className="col-span-2 h-20 overflow-hidden scrollbar scrollbar-thumb-white">
           <h1 className="">Networks</h1>
-          {networks.slice(0, 100).map((network) => (
-            <>
+          <div className="overflow-y-scroll">
+            {networks.slice(0, 100).map((network) => (
               <div key={network.id}>
                 {network.attributes.name + ' - ' + network.id}
               </div>
-            </>
-          ))}
+            ))}
+          </div>
         </div>
+
         <div className="mx-auto flex content-center items-center justify-center">
           <div className="col-span-3 flex border p-4">
             <div className="p-4">

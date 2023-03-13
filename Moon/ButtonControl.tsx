@@ -49,7 +49,7 @@ function ButtonControl({
       >
         Arbitrage
       </button>
-      <button
+      {/* <button
         onClick={() => {
           // defaultCam(controlRef, cameraRef)
           moveTarget(controlRef, 200, 100, 0)
@@ -61,7 +61,7 @@ function ButtonControl({
         }}
       >
         Interface
-      </button>
+      </button> */}
       <button
         onClick={() => {
           moveTarget(controlRef, 0, 0, 0)
@@ -73,9 +73,9 @@ function ButtonControl({
       >
         Ouija
       </button>
-      <button onClick={() => callback()}>
+      {/* <button onClick={() => callback()}>
         {txtColor == '#fff' ? '🌞' : '🌚'}
-      </button>
+      </button> */}
     </motion.div>
   )
 }
