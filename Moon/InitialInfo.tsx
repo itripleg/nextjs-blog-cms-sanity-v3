@@ -34,16 +34,9 @@ export default function InitialInfo({
   return (
     <>
       {/* Initial page */}
-      <div className="overflow-hidden">
-        <div className="info">
-          <div className="grid grid-cols-2 place-items-center bg-blue-800/20 py-4 text-center">
-            <MoonPhase />
-            <Retrograde />
-          </div>
-        </div>
-      </div>
+
       <div className="flex flex-col pb-8 text-center lg:p-12">
-        <div className="mx-auto flex lg:flex-col">
+        <div className="mx-auto flex p-8 lg:flex-col">
           <motion.img src={data.image.small} />
         </div>
         <div>
@@ -68,7 +61,7 @@ export default function InitialInfo({
               className="flex gap-8 overflow-x-scroll text-center scrollbar overflow-y-hidden scrollbar-track-blue-800 scrollbar-thumb-white/60"
             >
               {data?.tickers.map((ticker: any, i: number) => (
-                <div key={i} className="p-4">
+                <div key={i} className="p-8">
                   <h1>{ticker.market.name}</h1>
                   <p>${ticker.last.toLocaleString('en-US')}</p>
                   <p>
