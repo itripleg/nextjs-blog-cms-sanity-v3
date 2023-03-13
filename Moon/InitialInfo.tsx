@@ -11,7 +11,6 @@ type Props = {
   tradeData
   coinId
   pair
-  firstSentence
   txtColor
   bgColor
 }
@@ -21,7 +20,6 @@ export default function InitialInfo({
   tradeData,
   coinId,
   pair,
-  firstSentence,
   txtColor,
   bgColor,
 }: Props) {
@@ -37,21 +35,11 @@ export default function InitialInfo({
     <>
       {/* Initial page */}
       <div className="overflow-hidden">
-        <div className="max-h-[400px] overflow-hidden">
-          <motion.p
-            initial={{ opacity: 0, backgroundColor: '#fff' }}
-            animate={{ opacity: 0.7, backgroundColor: bgColor }}
-            transition={{ delay: 2, duration: 3 }}
-            className="h-[100px] overflow-x-scroll p-8 text-center shadow"
-          >
-            {firstSentence}
-          </motion.p>
-        </div>
         <div className="info">
-          {/* <div className="grid grid-cols-2 place-items-center bg-blue-800/20 py-4 text-center">
+          <div className="grid grid-cols-2 place-items-center bg-blue-800/20 py-4 text-center">
             <MoonPhase />
             <Retrograde />
-          </div> */}
+          </div>
         </div>
       </div>
       <div className="flex flex-col pb-8 text-center lg:p-12">
@@ -77,7 +65,7 @@ export default function InitialInfo({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 2 }}
-              className="flex gap-8 overflow-x-scroll text-center overflow-y-hidden scrollbar scrollbar-track-blue-800 scrollbar-thumb-white/60"
+              className="flex gap-8 overflow-x-scroll text-center scrollbar overflow-y-hidden scrollbar-track-blue-800 scrollbar-thumb-white/60"
             >
               {data?.tickers.map((ticker: any, i: number) => (
                 <div key={i} className="p-4">
