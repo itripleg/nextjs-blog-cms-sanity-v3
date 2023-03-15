@@ -64,7 +64,7 @@ function ButtonControl({
       </button> */}
       <button
         onClick={() => {
-          moveTarget(controlRef, 0, 0, 0)
+          moveTarget(controlRef, -100, 0, 0)
           moveCamPosition({ cameraRef, x: 600, y: 666, z: 500, scale: 3 })
           // moveCamPosition({ cameraRef, x: 0, y: 0, z: 0, scale: 3 })
           setDisplayWindow('ouija')
@@ -72,6 +72,17 @@ function ButtonControl({
         }}
       >
         Ouija
+      </button>
+      <button
+        onClick={() => {
+          moveTarget(controlRef, 0, 0, 0)
+          moveCamPosition({ cameraRef, x: -50, y: 150, z: 600, scale: 3 })
+          // moveCamPosition({ cameraRef, x: 0, y: 0, z: 0, scale: 3 })
+          setDisplayWindow('about')
+          controlRef.current.autoRotate = false
+        }}
+      >
+        About
       </button>
       {/* <button onClick={() => callback()}>
         {txtColor == '#fff' ? '🌞' : '🌚'}
