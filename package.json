@@ -14,7 +14,9 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@aave/core-v3": "^1.17.2",
     "@bradgarropy/use-countdown": "^1.5.2",
+    "@chainlink/contracts": "^0.6.1",
     "@portabletext/react": "^2.0.0",
     "@react-three/drei": "^9.56.12",
     "@react-three/fiber": "^8.10.4",
@@ -24,6 +26,7 @@
     "@tensorflow/tfjs-node": "^4.2.0",
     "@types/d3": "^7.4.0",
     "@vercel/og": "^0.0.27",
+    "@walletconnect/web3-provider": "^1.8.0",
     "@web3modal/ethereum": "^2.2.0",
     "@web3modal/react": "^2.2.0",
     "binance-api-node": "^0.12.3",
