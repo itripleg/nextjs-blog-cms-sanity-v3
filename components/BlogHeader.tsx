@@ -16,18 +16,6 @@ export default function BlogHeader({
 }) {
   const controls = useAnimationControls()
 
-  const [response, setResponse] = useState('')
-
-  const fetchResponse = () => {
-    console.log('fetching one-liner')
-    fetch('/api/cheeky-one-liner')
-      .then((res) => res.json())
-      .then((data) => setResponse(data.response))
-  }
-  useEffect(() => {
-    fetchResponse()
-  }, [])
-
   switch (level) {
     case 1:
       return (
@@ -46,7 +34,7 @@ export default function BlogHeader({
               >
                 {title}
               </motion.h4>
-              <div className="md:hidden" onClick={fetchResponse}>
+              <div className="md:hidden">
                 <Mage controls={controls} />
               </div>
               {/* big mage */}
@@ -59,14 +47,14 @@ export default function BlogHeader({
                 <Mage controls={controls} />
               </motion.div>
 
-              <motion.h4
+              {/* <motion.h4
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2, duration: 1 }}
                 className={`mt-5 min-w-full text-center text-lg md:pl-8 md:text-left ${styles.portableText}`}
               >
                 {response}
-              </motion.h4>
+              </motion.h4> */}
             </header>
           </motion.div>
         </>
