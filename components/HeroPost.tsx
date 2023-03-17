@@ -25,7 +25,7 @@ export default function HeroPost(
       .then((data) => setResponse(data.response))
   }
   useEffect(() => {
-    // fetchResponse()
+    fetchResponse()
   }, [])
   // if (title.includes('office')) {
   // }
@@ -35,16 +35,16 @@ export default function HeroPost(
         <Suspense
           fallback={
             <motion.div
-              animate={{ scale: 2 }}
+              animate={{ scale: 1.3 }}
               transition={{
-                duration: 1,
+                duration: 4,
                 repeat: Infinity,
                 repeatType: 'reverse',
                 type: 'spring',
               }}
               className="flex h-full items-center justify-center text-center uppercase tracking-widest text-white/50"
             >
-              Loading...
+              {response}
             </motion.div>
           }
         >
