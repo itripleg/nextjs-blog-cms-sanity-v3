@@ -5,6 +5,7 @@ import { Web3Button, Web3Modal } from '@web3modal/react'
 import Chart from 'ChartWidget/Chart'
 import { motion, useAnimationControls } from 'framer-motion'
 import gsap from 'gsap'
+import About from 'Moon/About'
 import ButtonControl from 'Moon/ButtonControl'
 import InitialInfo from 'Moon/InitialInfo'
 import Interface from 'Moon/Interface'
@@ -267,7 +268,9 @@ const Tradestation = () => {
                     <Retrograde />
                   </div>
                 ) : (
-                  <div></div>
+                  <div>
+                    <About />
+                  </div>
                 )
               ) : (
                 <MoonLoading />

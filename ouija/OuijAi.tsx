@@ -26,17 +26,31 @@ function OuijAi({}: Props) {
     const firstSentence = paragraph.match(/^[^\.\?!]*/)[0]
     return firstSentence + '.'
   }
-
+  const [mode, setMode] = useState('ouija')
   async function onSubmit(event: any) {
     event.preventDefault()
     setQuestionInput('')
-    console.log('submitting...', questionInput)
     animationControls.start('default')
-    const response = await fetch('/api/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question: questionInput }),
-    })
+    console.log('submitting...', questionInput)
+    if (questionInput.toLowerCase().includes('goodbye')) {
+      setMode('ai')
+      return
+    }
+    let response
+    if (mode == 'ouija') {
+      response = await fetch('/api/ouija-prompt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: questionInput }),
+      })
+    }
+    if (mode == 'ai') {
+      response = await fetch('/api/gpt-prompt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: questionInput }),
+      })
+    }
     const data = await response.json()
     if (response.status !== 200) {
       throw (
