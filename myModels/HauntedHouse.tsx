@@ -10,6 +10,7 @@ import { useGLTF } from '@react-three/drei'
 import React, { useRef } from 'react'
 
 export default function Model(props) {
+  // @ts-ignore
   const { nodes, materials } = useGLTF('/models/haunted_house.glb')
   return (
     <group {...props} dispose={null}>

@@ -9,8 +9,7 @@ import React, { useRef } from 'react'
 
 export default function Model(props) {
   const router = useRouter()
-  // @ts-ignore
-  const { nodes, materials } = useGLTF('/models/office_enhanced.glb')
+  const { nodes, materials } = useGLTF('/models/office_enhanced.glb') as any
   return (
     <group {...props} dispose={null}>
       {/* guitar */}

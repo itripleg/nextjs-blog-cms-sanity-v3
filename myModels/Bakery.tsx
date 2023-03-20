@@ -10,7 +10,7 @@ import { useGLTF } from '@react-three/drei'
 import React, { useRef } from 'react'
 
 export default function Bakery(props) {
-  const { nodes, materials } = useGLTF('/models/free_isometric_cafe.glb')
+  const { nodes, materials } = useGLTF('/models/free_isometric_cafe.glb') as any
   return (
     <group {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]}>

@@ -6,7 +6,7 @@ import { useGLTF } from '@react-three/drei'
 import React, { useRef } from 'react'
 
 export default function Office(props) {
-  const { nodes, materials } = useGLTF('/models/Office.glb')
+  const { nodes, materials } = useGLTF('/models/Office.glb') as any
   return (
     <group {...props} dispose={null}>
       <group

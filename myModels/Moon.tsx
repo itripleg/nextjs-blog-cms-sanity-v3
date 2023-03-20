@@ -3,7 +3,7 @@ import { motion } from 'framer-motion-3d'
 import React, { useRef } from 'react'
 
 export default function Model(props) {
-  const { nodes, materials } = useGLTF('/models/low_poly_moon.glb')
+  const { nodes, materials } = useGLTF('/models/low_poly_moon.glb') as any
   const meshRef = useRef(null)
   const getInfo = () => {
     console.log(meshRef.current.position)
