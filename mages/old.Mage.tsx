@@ -65,6 +65,7 @@ export default function Mage({ controls }: Props) {
 
   return (
     <motion.div
+      initial={{ opacity: 0 }}
       animate={{
         rotateX: 0,
         rotateZ: 0,
@@ -74,13 +75,14 @@ export default function Mage({ controls }: Props) {
         opacity: 1,
         padding: 12,
       }}
+      transition={{ duration: 1 }}
       // className="mx-auto grid min-w-[75px] grid-cols-2 items-center justify-center rounded-full border text-center shadow-xl"
       className="flex gap-2 md:gap-20"
     >
       <motion.a
         // animate={{ rotateY: 180, opacity: 1 }}
-        initial={{ rotateY: 180 }}
-        animate={controls}
+        initial={{ rotateY: 180, opacity: 0 }}
+        animate={(controls, { opacity: 1 })}
         variants={mageVariants}
         className=""
         onClick={() => {

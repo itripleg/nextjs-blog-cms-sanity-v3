@@ -14,7 +14,7 @@ export default async function handler(
   try {
     let completion = await openai.createCompletion({
       model: 'text-davinci-002',
-      prompt: `Write a cheeky one liner for a dev. Keep it short and sweet. Try not to use quotes unless using an actual quote.`,
+      prompt: `Write a cheeky one liner for a developers website. This will show while a 3d scene is loading. Keep it short, sweet, and friendly.`,
       temperature: 1,
       max_tokens: 100,
     })

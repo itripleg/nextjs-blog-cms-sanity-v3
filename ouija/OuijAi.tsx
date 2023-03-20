@@ -27,6 +27,7 @@ function OuijAi({}: Props) {
     return firstSentence + '.'
   }
   const [mode, setMode] = useState('ouija')
+
   async function onSubmit(event: any) {
     event.preventDefault()
     setQuestionInput('')
@@ -52,6 +53,7 @@ function OuijAi({}: Props) {
       })
     }
     const data = await response.json()
+    console.log(data)
     if (response.status !== 200) {
       throw (
         data.error || new Error(`Request failed with status ${response.status}`)

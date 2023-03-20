@@ -25,7 +25,7 @@ function MoonLoading({}: Props) {
         🔮
       </motion.p>
       <motion.p
-        animate={{ scale: 10, y: -545 }}
+        animate={{ scale: 10, y: -720 }}
         transition={{ duration: 2.11 }}
       >
         🌚
