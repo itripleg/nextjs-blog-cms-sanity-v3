@@ -60,6 +60,8 @@ const Tradestation = () => {
   const [bgColor, setBgColor] = useState('#000')
   const [txtColor, setTxtColor] = useState('#fff')
   const [autoRotate, setAutoRotate] = useState(false)
+  const [displayWindow, setDisplayWindow] = useState('home')
+  const [chartContainer, bounds] = useMeasure()
 
   const mageControls = useAnimationControls()
 
@@ -68,37 +70,60 @@ const Tradestation = () => {
   const lightRef = useRef(null)
 
   async function fetchCoinGeckoData(id) {
-    const response = await fetch(`${apiEndpoint}/${id}`)
-    const data = await response.json()
-    return data
+    if (id) {
+      console.log('getting coingecko data')
+      const response = await fetch(`${apiEndpoint}${id}`)
+      const data = await response.json()
+      setData(data)
+      return data
+    }
   }
 
   async function fetchBinanceData(pair) {
-    const response = await fetch(`/api/trades?pair=${pair}`)
-    const binanceData = await response.json()
-    setTradeData(binanceData)
-    return binanceData
-  }
-  useEffect(() => {
-    console.log(
-      'tradestation useEffect fetching data',
-      'coinId: ' + coinId,
-      'pair: ' + pair
-    )
-    const fetchData = async () => {
-      const coinGeckoData = await fetchCoinGeckoData(coinId)
-      setData(coinGeckoData)
-
-      if (pair) {
-        const binanceData = await fetchBinanceData(pair)
-        console.log('binanceData:', binanceData)
-        setTradeData(binanceData)
-      }
+    if (pair) {
+      console.log('getting binance data')
+      const response = await fetch(`/api/trades?pair=${pair}`)
+      const binanceData = await response.json()
+      setTradeData(binanceData)
+      return binanceData
     }
+  }
+  // useEffect(() => {
+  //   console.log(
+  //     'tradestation useEffect fetching data',
+  //     'coinId: ' + coinId,
+  //     'pair: ' + pair
+  //   )
+  //   const fetchData = async () => {
+  //     const coinGeckoData = await fetchCoinGeckoData(coinId)
+  //     setData(coinGeckoData)
 
-    fetchData()
-    const intervalId = setInterval(fetchData, 10 * 1000)
-    return () => clearInterval(intervalId)
+  //     if (pair) {
+  //       const binanceData = await fetchBinanceData(pair)
+  //       console.log('binanceData:', binanceData)
+  //       setTradeData(binanceData)
+  //     }
+  //   }
+  //   if (displayWindow == 'home') {
+  //     fetchData()
+  //   }
+  //   const intervalId = setInterval(fetchData, 11 * 1000)
+  //   return () => clearInterval(intervalId)
+  // }, [coinId, pair, displayWindow])
+
+  useEffect(() => {
+    if (coinId) {
+      fetchCoinGeckoData(coinId)
+    }
+    if (pair) {
+      fetchBinanceData(pair)
+    }
+    const intervalId1 = setInterval(fetchCoinGeckoData, 11 * 1000)
+    const intervalId2 = setInterval(fetchBinanceData, 6 * 1000)
+    return () => {
+      clearInterval(intervalId1)
+      clearInterval(intervalId2)
+    }
   }, [coinId, pair])
 
   const newFetch = async (coin) => {
@@ -121,9 +146,6 @@ const Tradestation = () => {
   }
   const initialPage = useRef(null)
 
-  const [displayWindow, setDisplayWindow] = useState('home')
-
-  const [chartContainer, bounds] = useMeasure()
   if (!DEBUG) {
     return (
       <>
@@ -227,7 +249,7 @@ const Tradestation = () => {
                     className="bg-black/50 p-6"
                     animate={{
                       opacity: 1,
-                      color: txtColor,
+                      // color: txtColor,
                       // backgroundColor: bgColor,
                     }}
                     transition={{ delay: 2, duration: 3 }}

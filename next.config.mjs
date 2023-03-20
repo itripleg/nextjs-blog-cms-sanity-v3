@@ -5,6 +5,10 @@ const config = {
       { hostname: 'cdn.sanity.io' },
       { hostname: 'source.unsplash.com' },
       { hostname: 'buncombe.tech' },
+      {
+        protocol: 'https',
+        hostname: 'cataas.com',
+      },
     ],
   },
   typescript: {

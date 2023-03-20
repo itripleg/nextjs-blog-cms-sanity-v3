@@ -41,8 +41,11 @@ function ArbitrageCalculator(txtColor: any, bgColor: any) {
 
   useEffect(() => {
     getNetworks()
+  }, [])
+
+  useEffect(() => {
     getPools()
-  })
+  }, [getPools, targetNetwork])
 
   const calculateArbitrage = () => {
     const cost1 = price1 * tokenAmount

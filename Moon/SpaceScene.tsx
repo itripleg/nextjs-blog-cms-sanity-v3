@@ -8,6 +8,7 @@ import { Canvas } from '@react-three/fiber'
 import { animationControls, useAnimation } from 'framer-motion'
 import gsap from 'gsap'
 import Moon from 'myModels/Moon'
+import Planet from 'myModels/Planet'
 // import OuijaBoard from 'ouija/OuijaBoard'
 import { Suspense } from 'react'
 import { useRef } from 'react'
@@ -102,6 +103,7 @@ export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
             position={[0, 0, 0]}
           />
           <Moon scale={50} position={[-100, 120, 150]} />
+          <Planet scale={100} />
         </Canvas>
       </Suspense>
     </>
