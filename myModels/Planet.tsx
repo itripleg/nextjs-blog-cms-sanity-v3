@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 
 export default function Model(props) {
   const group = useRef()
+  //   @ts-ignore
   const { nodes, materials, animations } = useGLTF('/models/planet.glb')
   const { actions } = useAnimations(animations, group)
 
