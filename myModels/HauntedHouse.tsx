@@ -10,8 +10,7 @@ import { useGLTF } from '@react-three/drei'
 import React, { useRef } from 'react'
 
 export default function Model(props) {
-  // @ts-ignore
-  const { nodes, materials } = useGLTF('/models/haunted_house.glb')
+  const { nodes, materials } = useGLTF('/models/haunted_house.glb') as any
   return (
     <group {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]} scale={0}>

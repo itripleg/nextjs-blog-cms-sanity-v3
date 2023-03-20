@@ -7,7 +7,7 @@ import React, { useRef } from 'react'
 
 export default function Model(props) {
   // @ts-ignore
-  const { nodes, materials } = useGLTF('/models/sundial.glb')
+  const { nodes, materials } = useGLTF('/models/sundial.glb') as any
   return (
     <group {...props} dispose={null}>
       <group rotation={[2.52, 0, 0]} scale={0.09}>

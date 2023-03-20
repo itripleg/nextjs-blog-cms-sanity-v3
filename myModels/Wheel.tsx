@@ -6,7 +6,7 @@ import { useGLTF } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 
 export default function Model(props) {
-  const { nodes, materials } = useGLTF('/models/wheel.glb')
+  const { nodes, materials } = useGLTF('/models/wheel.glb') as any
   return (
     <group {...props} dispose={null}>
       <mesh
