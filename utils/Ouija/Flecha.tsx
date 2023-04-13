@@ -3,6 +3,7 @@ import { motion } from 'framer-motion-3d'
 import React, { useEffect } from 'react'
 
 export function Flecha({ animationControls }, props: any) {
+  // @ts-ignore
   const { nodes, materials } = useGLTF('/Flecha.glb')
 
   const positions = {

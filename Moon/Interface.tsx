@@ -69,21 +69,25 @@ function ArbitrageCalculator(txtColor: any, bgColor: any) {
         <p className="pb-4 underline">
           Target: <span>{targetNetwork}</span>
         </p>
-        <div className="h-[250px] max-w-2xl border p-2 scrollbar">
-          {networks.slice(0, 100).map((network) => (
-            <div
-              className="cursor-pointer py-1"
-              key={network.id}
-              onClick={async () => {
-                setTargetNetwork(network.id)
-                await getDexes(network.id)
-                // await getPools()
-              }}
-            >
-              {network.attributes.name + ' - ' + network.id}
-            </div>
-          ))}
-        </div>
+        {networks ? (
+          <div className="h-[250px] max-w-2xl border p-2 scrollbar">
+            {networks.slice(0, 100).map((network) => (
+              <div
+                className="cursor-pointer py-1"
+                key={network.id}
+                onClick={async () => {
+                  setTargetNetwork(network.id)
+                  await getDexes(network.id)
+                  // await getPools()
+                }}
+              >
+                {network.attributes.name + ' - ' + network.id}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div>No Networks Found</div>
+        )}
       </div>
       {dexes[targetNetwork] && (
         <div>
