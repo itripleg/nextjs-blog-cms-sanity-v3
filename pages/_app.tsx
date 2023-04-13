@@ -1,10 +1,12 @@
 import 'tailwindcss/tailwind.css'
 import 'styles/globals.css'
 
+import LogRocket from 'logrocket'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 
 export default function App({ Component, pageProps }: AppProps) {
+  LogRocket.init('wreber/buncombetech')
   return (
     <>
       <Head>
