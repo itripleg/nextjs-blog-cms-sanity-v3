@@ -89,6 +89,7 @@ export default function SpaceScene({ cameraRef, controlRef, lightRef }: Props) {
             enablePan={false}
             enableRotate={false}
             enableZoom={false}
+            onChange={() => console.log(controlRef.current)}
           />
           {/* @ts-ignore */}
           <PerspectiveCamera

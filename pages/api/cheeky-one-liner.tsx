@@ -13,7 +13,7 @@ export default async function handler(
 ) {
   try {
     let completion = await openai.createCompletion({
-      model: 'text-davinci-002',
+      model: 'gpt-3.5-turbo-instruct',
       prompt: `Write a cheeky one liner for a developers website. This will show while a 3d scene is loading. Keep it short, sweet, and friendly.`,
       temperature: 1,
       max_tokens: 100,
