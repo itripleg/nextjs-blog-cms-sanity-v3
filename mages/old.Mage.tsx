@@ -47,15 +47,15 @@ export default function Mage({ controls }: Props) {
     if (menuIcon) {
       setMenuIcon('')
       setShowIcons('hidden')
-      controls.start('turnLeft')
+      controls.start('turnLeft') // Correctly starts the turnLeft animation
       setCounter(counter + 1)
-      if (counter == 2) {
+      if (counter === 2) {
         setCounter(0)
       }
     } else {
       setMenuIcon('hidden')
       setShowIcons('')
-      controls.start('turnRight')
+      controls.start('turnRight') // Correctly starts the turnRight animation
     }
   }
 
@@ -81,8 +81,8 @@ export default function Mage({ controls }: Props) {
     >
       <motion.a
         // animate={{ rotateY: 180, opacity: 1 }}
-        initial={{ rotateY: 180, opacity: 0 }}
-        animate={(controls, { opacity: 1 })}
+        initial={{ rotateY: 180 }}
+        animate={controls}
         variants={mageVariants}
         className=""
         onClick={() => {
@@ -121,7 +121,7 @@ export default function Mage({ controls }: Props) {
         ) : counter == 1 ? (
           <Link href="/studio">📝</Link>
         ) : counter == 2 ? (
-          <Link href="https://super-bubblegum-fd734f.netlify.app/">😎</Link>
+          <Link href="https://jbdevfolio.netlify.app/">😎</Link>
         ) : (
           'error'
         )}
